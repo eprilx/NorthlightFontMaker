@@ -22,6 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+using AutoUpdaterDotNET;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -33,7 +34,6 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
-using AutoUpdaterDotNET;
 
 namespace NorthlightFontMakerGUI
 {
@@ -49,7 +49,7 @@ namespace NorthlightFontMakerGUI
             culture = CultureInfo.CreateSpecificCulture("en-US");
             Thread.CurrentThread.CurrentCulture = culture;
             Thread.CurrentThread.CurrentUICulture = culture;
-            
+
             string ToolVersion;
             try
             {
@@ -75,15 +75,15 @@ namespace NorthlightFontMakerGUI
             string exePath = AppDomain.CurrentDomain.BaseDirectory;
             exePath += "NorthlightFontMaker.exe";
             if (!File.Exists(exePath))
-                { MessageBox.Show("Missing " + exePath, "Error", MessageBoxButton.OK, MessageBoxImage.Error); return; }
+            { MessageBox.Show("Missing " + exePath, "Error", MessageBoxButton.OK, MessageBoxImage.Error); return; }
             string strCmdText = exePath + " ";
             foreach (string str in args)
             {
                 strCmdText += " \"" + str + "\"";
             }
-            
+
             Console.WriteLine(strCmdText);
-            
+
             Process process = new Process();
             process.StartInfo.FileName = exePath;
             process.StartInfo.Arguments = strCmdText;

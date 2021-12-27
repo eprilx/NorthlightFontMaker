@@ -47,12 +47,10 @@ namespace NorthlightFontMaker
 
             ReadTableID(input, ref binfnt.idList, binfnt.generalInfo.charsCount);
 
-            getWHimage(input, ref binfnt.generalInfo, ref binfnt);
+            ReadTextures(input, ref binfnt.generalInfo, ref binfnt);
 
             get_Baseline_LineHeight(ref binfnt.generalInfo, binfnt);
 
-            input.Position -= 20;
-            binfnt.DDSTextures = input.ReadBytes((int)(input.Length - input.Position));
             input.Close();
 
             return binfnt;
@@ -74,7 +72,7 @@ namespace NorthlightFontMaker
         {
             input.Position = 4;
             infoBINFNT.charsCount = input.ReadValueU32() / 4;
-            
+
             for (int i = 0; i < infoBINFNT.charsCount; i++)
             {
                 binfnt.charDescList.Add(new charDesc
@@ -180,7 +178,7 @@ namespace NorthlightFontMaker
         public static void WriteTableAdvanceDesc(FileStream output, general infoBINFNT, BINFNTStruct binfnt)
         {
             output.WriteValueU32(infoBINFNT.charsCount);
-            foreach(advanceDesc _char in binfnt.advanceDescList)
+            foreach (advanceDesc _char in binfnt.advanceDescList)
             {
                 output.WriteValueU16(_char.plus4);
                 output.WriteValueU16(_char.numb4);
@@ -203,7 +201,7 @@ namespace NorthlightFontMaker
             int startPos = (int)input.Position;
             idList = new ushort[charsCount];
             int baseId = 0;
-            while ((input.Position - startPos)/2 <= 0xFFFF)
+            while ((input.Position - startPos) / 2 <= 0xFFFF)
             {
                 ushort idx = input.ReadValueU16();
                 if (idx != 0)
@@ -218,7 +216,7 @@ namespace NorthlightFontMaker
         {
             ushort[] tableID = new ushort[0xFFFF + 1];
             ushort baseID = 0;
-            foreach(ushort id in idList)
+            foreach (ushort id in idList)
             {
                 tableID[id] = baseID;
                 baseID += 1;
@@ -228,13 +226,21 @@ namespace NorthlightFontMaker
                 output.WriteValueU16(value);
             }
         }
-        private static void getWHimage(FileStream input, ref general infoBINFNT, ref BINFNTStruct binfnt)
+        private static void ReadTextures(FileStream input, ref general infoBINFNT, ref BINFNTStruct binfnt)
         {
             //input.Position = 4 + 4 + infoBINFNT.charsCount * 64 + 4 + infoBINFNT.charsCount * 44 + 131072;
             uint sizeDDS = input.ReadValueU32();
+            long posDDS = input.Position;
             input.ReadBytes(12);
             infoBINFNT.widthImg = input.ReadValueU32();
             infoBINFNT.heightImg = input.ReadValueU32();
+            input.Position = posDDS;
+            binfnt.DDSTextures = input.ReadBytes((int)(input.Length - input.Position));
+        }
+        public static void WriteTextures(FileStream output, FileStream inputDDS)
+        {
+            output.WriteValueU32((uint)inputDDS.Length);
+            output.WriteFromStream(inputDDS, inputDDS.Length);
         }
         private static void get_Baseline_LineHeight(ref general infoBINFNT, BINFNTStruct binfnt)
         {

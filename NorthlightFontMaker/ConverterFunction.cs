@@ -22,7 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-using Gibbed.IO;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -77,14 +76,14 @@ namespace NorthlightFontMaker
 
             // convert idList
             int count = 0;
-            foreach(ushort id in binfnt.idList)
+            foreach (ushort id in binfnt.idList)
             {
                 bmf.charDescList[count].id = id;
                 count += 1;
             }
             // convert advanceList
             count = 0;
-            foreach(BINFNTStruct.advanceDesc advanceBINFNT in binfnt.advanceDescList)
+            foreach (BINFNTStruct.advanceDesc advanceBINFNT in binfnt.advanceDescList)
             {
                 bmf.charDescList[count].yoffset = -advanceBINFNT.yoffset2_1 * binfnt.generalInfo.baseLine;
                 bmf.charDescList[count].xadvance = advanceBINFNT.xadvance2_1 * binfnt.generalInfo.baseLine;
@@ -125,8 +124,16 @@ namespace NorthlightFontMaker
             float baseLinebmf = bmf.generalInfo._base;
             foreach (BMFontStruct.charDesc charBMF in bmf.charDescList)
             {
+                if (charBMF.id == 32)
+                {
+                    if (charBMF.width == 0)
+                    {
+                        charBMF.width = 6;
+                        charBMF.height = 6;
+                    }
+                }
                 //(float x, float y, float width, float height) = Ulities.getPointFromUVmapping(charBINFNT.UVLeft_1, charBINFNT.UVTop_1, charBINFNT.UVRight_1, charBINFNT.UVBottom_1, bmf.generalInfo.WidthImg, bmf.generalInfo.HeightImg);
-                (float UVLeft, float UVTop, float UVRight, float UVBottom)  = Ulities.getUVmappingFromPoint(charBMF.x, charBMF.y, charBMF.width, charBMF.height, bmf.generalInfo.WidthImg, bmf.generalInfo.HeightImg);
+                (float UVLeft, float UVTop, float UVRight, float UVBottom) = Ulities.getUVmappingFromPoint(charBMF.x, charBMF.y, charBMF.width, charBMF.height, bmf.generalInfo.WidthImg, bmf.generalInfo.HeightImg);
                 BINFNTStruct.charDesc charBINFNT = new();
 
                 charBINFNT.bearingX1_1 = charBMF.xoffset / baseLinebmf;
@@ -146,7 +153,7 @@ namespace NorthlightFontMaker
                 charBINFNT.bearingY1_1 = (lineHeightbmf - charBMF.yoffset) / baseLinebmf;
                 charBINFNT.bearingY1_2 = charBINFNT.bearingY1_1;
 
-                if(charBMF.id == 32)
+                if (charBMF.id == 32)
                 {
                     charBINFNT.bearingX1_1 = 0;
                     charBINFNT.bearingX1_2 = charBINFNT.bearingX1_1;
@@ -173,19 +180,6 @@ namespace NorthlightFontMaker
             int count = 0;
             foreach (BMFontStruct.charDesc charBMF in bmf.charDescList)
             {
-                //output.WriteValueU16(_char.plus4);
-                //output.WriteValueU16(_char.numb4);
-                //output.WriteValueU16(_char.plus6);
-                //output.WriteValueU16(_char.numb6);
-                //output.WriteValueF32(_char.zero);
-                //output.WriteValueF32(_char.xadvance1_1);
-                //output.WriteValueF32(_char.yoffset1_1);
-                //output.WriteValueF32(_char.xadvance2_1);
-                //output.WriteValueF32(_char.yoffset1_2);
-                //output.WriteValueF32(_char.xadvance2_2);
-                //output.WriteValueF32(_char.yoffset2_1);
-                //output.WriteValueF32(_char.xadvance1_2);
-                //output.WriteValueF32(_char.yoffset2_2);
                 BINFNTStruct.advanceDesc advanceBINFNT = new();
                 advanceBINFNT.plus4 = (ushort)(numb4 * count);
                 advanceBINFNT.numb4 = numb4;
@@ -199,17 +193,16 @@ namespace NorthlightFontMaker
                 advanceBINFNT.xadvance2_1 = charBMF.xadvance / baseLinebmf;
                 advanceBINFNT.xadvance2_2 = advanceBINFNT.xadvance2_1;
 
-                advanceBINFNT.yoffset1_1 = advanceBINFNT.yoffset2_1 - charBMF.height/ baseLinebmf;
+                advanceBINFNT.yoffset1_1 = advanceBINFNT.yoffset2_1 - charBMF.height / baseLinebmf;
                 advanceBINFNT.yoffset1_2 = advanceBINFNT.yoffset1_1;
                 count += 1;
                 binfnt.advanceDescList.Add(advanceBINFNT);
             }
             BINFNTFormat.WriteTableAdvanceDesc(output, binfnt.generalInfo, binfnt);
 
-
             // convert idList
             List<ushort> idList = new();
-            foreach(BMFontFormat.charDesc _char in bmf.charDescList)
+            foreach (BMFontFormat.charDesc _char in bmf.charDescList)
             {
                 idList.Add((ushort)_char.id);
             }
@@ -217,14 +210,19 @@ namespace NorthlightFontMaker
             BINFNTFormat.WriteTableID(output, binfnt.idList);
 
             // write textures
-            
-            var inputDDS = File.OpenRead(inputBMF.Replace(".fnt", "_0.dds", StringComparison.OrdinalIgnoreCase));
-            output.WriteValueU32((uint)inputDDS.Length);
-            output.WriteFromStream(inputDDS, inputDDS.Length);
-            inputDDS.Close();
+            string pathDDS = inputBMF.Replace(".fnt", "_0.dds", StringComparison.OrdinalIgnoreCase);
+            if (File.Exists(pathDDS))
+            {
+                var inputDDS = File.OpenRead(pathDDS);
+                BINFNTFormat.WriteTextures(output, inputDDS);
+                inputDDS.Close();
+            }
+            else
+            {
+                throw new Exception("Missing textures file: " + pathDDS);
+            }
 
             output.Close();
         }
-
     }
 }

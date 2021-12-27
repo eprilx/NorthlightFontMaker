@@ -24,9 +24,7 @@ SOFTWARE.
 
 using Mono.Options;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Reflection;
 using System.Threading;
 
@@ -101,23 +99,11 @@ namespace NorthlightFontMaker
             }
             p.Parse(args);
 
-            //if (show_list)
-            //{
-            //    PrintSupportedGame();
-            //    Console.ReadKey();
-            //    return;
-            //}
-            //else
             if (args.Length == 0 || originalBINFNT == null || (fntBMF == null && command == "fnt2binfnt"))
             {
                 ShowHelp(p);
                 return;
             }
-            //else if (SupportedGame.FirstOrDefault(x => x.Contains(version)) == null)
-            //{
-            //    PrintSupportedGame();
-            //    return;
-            //}
 
             if (!originalBINFNT.EndsWith(".binfnt", StringComparison.OrdinalIgnoreCase))
             {
@@ -191,21 +177,11 @@ namespace NorthlightFontMaker
                 }
             }
 
-            //void PrintSupportedGame()
-            //{
-            //    Console.WriteLine("Supported games: ");
-            //    foreach (string game in SupportedGame)
-            //    {
-            //        Console.WriteLine(game);
-            //    }
-            //}
             void PrintCredit()
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.Write("\nNorthlightFontMaker v" + ToolVersion);
                 Console.WriteLine(" by eprilx");
-                Console.Write("Special thanks to: ");
-                Console.WriteLine("Rick Gibbed for Gibbed-IO");
                 Console.ResetColor();
             }
             void Done()

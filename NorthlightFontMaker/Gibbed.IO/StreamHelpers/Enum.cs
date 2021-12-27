@@ -54,9 +54,9 @@ namespace Gibbed.IO
                         case TypeCode.UInt32:
                         case TypeCode.Int64:
                         case TypeCode.UInt64:
-                        {
-                            return underlyingTypeCode;
-                        }
+                            {
+                                return underlyingTypeCode;
+                            }
                     }
                 }
 
@@ -84,57 +84,57 @@ namespace Gibbed.IO
             switch (EnumTypeCache.Get(type))
             {
                 case TypeCode.SByte:
-                {
-                    value = stream.ReadValueS8();
-                    break;
-                }
+                    {
+                        value = stream.ReadValueS8();
+                        break;
+                    }
 
                 case TypeCode.Byte:
-                {
-                    value = stream.ReadValueU8();
-                    break;
-                }
+                    {
+                        value = stream.ReadValueU8();
+                        break;
+                    }
 
                 case TypeCode.Int16:
-                {
-                    value = stream.ReadValueS16(endian);
-                    break;
-                }
+                    {
+                        value = stream.ReadValueS16(endian);
+                        break;
+                    }
 
                 case TypeCode.UInt16:
-                {
-                    value = stream.ReadValueU16(endian);
-                    break;
-                }
+                    {
+                        value = stream.ReadValueU16(endian);
+                        break;
+                    }
 
                 case TypeCode.Int32:
-                {
-                    value = stream.ReadValueS32(endian);
-                    break;
-                }
+                    {
+                        value = stream.ReadValueS32(endian);
+                        break;
+                    }
 
                 case TypeCode.UInt32:
-                {
-                    value = stream.ReadValueU32(endian);
-                    break;
-                }
+                    {
+                        value = stream.ReadValueU32(endian);
+                        break;
+                    }
 
                 case TypeCode.Int64:
-                {
-                    value = stream.ReadValueS64(endian);
-                    break;
-                }
+                    {
+                        value = stream.ReadValueS64(endian);
+                        break;
+                    }
 
                 case TypeCode.UInt64:
-                {
-                    value = stream.ReadValueU64(endian);
-                    break;
-                }
+                    {
+                        value = stream.ReadValueU64(endian);
+                        break;
+                    }
 
                 default:
-                {
-                    throw new NotSupportedException();
-                }
+                    {
+                        throw new NotSupportedException();
+                    }
             }
 
             return (T)Enum.ToObject(type, value);
@@ -153,57 +153,57 @@ namespace Gibbed.IO
             switch (EnumTypeCache.Get(type))
             {
                 case TypeCode.SByte:
-                {
-                    stream.WriteValueS8((sbyte)value);
-                    break;
-                }
+                    {
+                        stream.WriteValueS8((sbyte)value);
+                        break;
+                    }
 
                 case TypeCode.Byte:
-                {
-                    stream.WriteValueU8((byte)value);
-                    break;
-                }
+                    {
+                        stream.WriteValueU8((byte)value);
+                        break;
+                    }
 
                 case TypeCode.Int16:
-                {
-                    stream.WriteValueS16((short)value, endian);
-                    break;
-                }
+                    {
+                        stream.WriteValueS16((short)value, endian);
+                        break;
+                    }
 
                 case TypeCode.UInt16:
-                {
-                    stream.WriteValueU16((ushort)value, endian);
-                    break;
-                }
+                    {
+                        stream.WriteValueU16((ushort)value, endian);
+                        break;
+                    }
 
                 case TypeCode.Int32:
-                {
-                    stream.WriteValueS32((int)value, endian);
-                    break;
-                }
+                    {
+                        stream.WriteValueS32((int)value, endian);
+                        break;
+                    }
 
                 case TypeCode.UInt32:
-                {
-                    stream.WriteValueU32((uint)value, endian);
-                    break;
-                }
+                    {
+                        stream.WriteValueU32((uint)value, endian);
+                        break;
+                    }
 
                 case TypeCode.Int64:
-                {
-                    stream.WriteValueS64((long)value, endian);
-                    break;
-                }
+                    {
+                        stream.WriteValueS64((long)value, endian);
+                        break;
+                    }
 
                 case TypeCode.UInt64:
-                {
-                    stream.WriteValueU64((ulong)value, endian);
-                    break;
-                }
+                    {
+                        stream.WriteValueU64((ulong)value, endian);
+                        break;
+                    }
 
                 default:
-                {
-                    throw new NotSupportedException();
-                }
+                    {
+                        throw new NotSupportedException();
+                    }
             }
         }
 

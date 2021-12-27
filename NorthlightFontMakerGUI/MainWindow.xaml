@@ -5,7 +5,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:NorthlightFontMakerGUI"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-
     Width="727"
     Height="325"
     ResizeMode="NoResize"
@@ -30,7 +29,6 @@
         </Button>
         <RadioButton
             x:Name="rbtn1"
-
             Height="26"
             Margin="210,0,0,90"
             HorizontalAlignment="Left"
@@ -66,7 +64,7 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Bottom"
             Visibility="{Binding IsChecked, ElementName=rbtn1, Converter={StaticResource b2v}}">
-            <TextBlock FontSize="16" Text="Char Desc (*.fnt):" />
+            <TextBlock FontSize="16" Text="FNT file (*.fnt):" />
         </Label>
         <Label
             Height="37"
