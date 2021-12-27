@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "NorthlightFontMaker": {
+      "commandName": "Project",
+      "commandLineArgs": "--fnt2binfnt -f \"alanwakenightmare\\customer_facing.binfnt\" -b \"alanwakenightmare\\customer_facing.binfnt.fnt\""
+    }
+  }
+}

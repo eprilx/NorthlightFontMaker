@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net40;net45;net472;net48</TargetFrameworks>
+    <Company>Novell</Company>
+    <Copyright>Copyright © Novell 2008</Copyright>
+    <AssemblyVersion>0.2.1.1</AssemblyVersion>
+    <FileVersion>0.2.1.1</FileVersion>
+    <DefineConstants>NDESK_OPTIONS_LINQ;NDESK_OPTIONS</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(NDeskOptions_TargetFrameworksToBuild)' == '' ">
+    <GibbedIO_TargetFrameworksToBuild>$(TargetFrameworksToBuild)</GibbedIO_TargetFrameworksToBuild>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(NDeskOptions_TargetFrameworksToBuild)' == '' ">
+    <TargetFrameworks>netstandard2.0;net40;net45;net472;net48;net5.0</TargetFrameworks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(NDeskOptions_TargetFrameworksToBuild)' != '' ">
+    <TargetFrameworks>$(NDeskOptions_TargetFrameworksToBuild)</TargetFrameworks>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove=".git*" />
+  </ItemGroup>
+</Project>

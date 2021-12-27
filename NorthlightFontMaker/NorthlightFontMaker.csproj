@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+    <NeutralLanguage>en</NeutralLanguage>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
+    <PackageProjectUrl>https://github.com/eprilx/NorthlightFontMaker</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/eprilx/NorthlightFontMaker</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Copyright>Copyright (c) 2021 eprilx</Copyright>
+    <ApplicationIcon />
+    <StartupObject />
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <OutputPath>..\bin\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+  </PropertyGroup>
+
+</Project>

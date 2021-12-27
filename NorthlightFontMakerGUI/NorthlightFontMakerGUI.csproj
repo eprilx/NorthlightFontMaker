@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <OutputPath>..\bin\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <ApplicationIcon />
+    <StartupObject />
+    <AssemblyVersion>1.0.0</AssemblyVersion>
+    <NeutralLanguage>en</NeutralLanguage>
+    <PackageProjectUrl>https://github.com/eprilx/NorthlightFontMaker</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/eprilx/NorthlightFontMaker</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Copyright>Copyright (c) 2021 eprilx</Copyright>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autoupdater.NET.Official" Version="1.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NorthlightFontMaker\NorthlightFontMaker.csproj" />
+  </ItemGroup>
+
+</Project>

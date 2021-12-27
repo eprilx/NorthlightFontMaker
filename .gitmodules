@@ -1,0 +1,8 @@
+[submodule "NorthlightFontMaker/Gibbed.IO"]
+	path = NorthlightFontMaker/Gibbed.IO
+	url = https://github.com/gibbed/Gibbed.IO.git
+	branch = main
+[submodule "NorthlightFontMaker/NDesk.Options"]
+	path = NorthlightFontMaker/NDesk.Options
+	url = https://github.com/gibbed/NDesk.Options.git
+	branch = main

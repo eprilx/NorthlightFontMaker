@@ -1,0 +1,168 @@
+﻿<Window
+    x:Class="NorthlightFontMakerGUI.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:NorthlightFontMakerGUI"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+
+    Width="727"
+    Height="325"
+    ResizeMode="NoResize"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="b2v" />
+    </Window.Resources>
+    <Grid Background="#FFEFEFEF">
+        <Button
+            Width="150"
+            Height="37"
+            Margin="0,0,0,29"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Bottom"
+            Click="Button_Click"
+            FontSize="22">
+            <TextBlock
+                Text="Convert!"
+                TextAlignment="Center"
+                TextWrapping="Wrap" />
+        </Button>
+        <RadioButton
+            x:Name="rbtn1"
+
+            Height="26"
+            Margin="210,0,0,90"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Bottom"
+            VerticalContentAlignment="Center"
+            Checked="rbtn1_Checked"
+            IsChecked="True">
+            <TextBlock
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="17"
+                Text="FNT to BINFNT" />
+        </RadioButton>
+        <RadioButton
+            x:Name="rbtn2"
+            Height="26"
+            Margin="0,0,210,90"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            VerticalContentAlignment="Center"
+            Checked="rbtn2_Checked">
+            <TextBlock
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="17"
+                Text="BINFNT to FNT" />
+        </RadioButton>
+
+        <Label
+            x:Name="label1"
+            Height="37"
+            Margin="40,0,0,232"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Bottom"
+            Visibility="{Binding IsChecked, ElementName=rbtn1, Converter={StaticResource b2v}}">
+            <TextBlock FontSize="16" Text="Char Desc (*.fnt):" />
+        </Label>
+        <Label
+            Height="37"
+            Margin="40,0,0,182"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Bottom">
+            <TextBlock FontSize="16" Text="Original BINFNT:" />
+        </Label>
+        <Label
+            Height="37"
+            Margin="40,0,0,132"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Bottom">
+            <TextBlock FontSize="16" Text="Output:" />
+        </Label>
+
+        <TextBox
+            x:Name="txb1"
+            Width="480"
+            Height="22"
+            Margin="170,0,0,239"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Bottom"
+            FontSize="12"
+            Visibility="{Binding IsChecked, ElementName=rbtn1, Converter={StaticResource b2v}}">
+            <TextBox.Text>(*.fnt)</TextBox.Text>
+        </TextBox>
+        <TextBox
+            x:Name="txb2"
+            Width="480"
+            Height="22"
+            Margin="170,0,0,189"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Bottom"
+            FontSize="12"
+            TextChanged="txb2_TextChanged">
+            <TextBox.Text>(*.binfnt)</TextBox.Text>
+        </TextBox>
+        <TextBox
+            x:Name="txb3"
+            Width="480"
+            Height="22"
+            Margin="170,0,0,139"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Bottom"
+            FontSize="12"
+            Text="(Optional)" />
+        <Button
+            x:Name="btn3"
+            Width="25"
+            Height="22"
+            Margin="660,0,0,139"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Bottom"
+            Click="btn3_Click"
+            Content="..."
+            FontSize="14" />
+        <Button
+            x:Name="btn2"
+            Width="25"
+            Height="22"
+            Margin="660,0,0,189"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Bottom"
+            Click="btn2_Click"
+            Content="..."
+            FontSize="14" />
+        <Button
+            x:Name="btn1"
+            Width="25"
+            Height="22"
+            Margin="660,0,0,239"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Bottom"
+            Click="btn1_Click"
+            Content="..."
+            FontSize="14"
+            Visibility="{Binding IsChecked, ElementName=rbtn1, Converter={StaticResource b2v}}" />
+        <TextBlock
+            Margin="580,0,0,45"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Bottom"
+            FontSize="14">
+            <Hyperlink NavigateUri="https://github.com/eprilx/NorthlightFontMaker#usage" RequestNavigate="Hyperlink_RequestNavigate">
+                More Usage
+            </Hyperlink>
+        </TextBlock>
+        <TextBlock
+            Margin="580,0,0,20"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Bottom"
+            FontSize="14">
+            <Hyperlink NavigateUri="https://github.com/eprilx/NorthlightFontMaker/releases" RequestNavigate="Hyperlink_RequestNavigate">
+                More Update
+            </Hyperlink>
+        </TextBlock>
+    </Grid>
+</Window>
+
