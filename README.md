@@ -18,8 +18,8 @@ NorthlightFontMaker is a tool used to create/edit custom bitmap fonts for Northl
 NorthlightFontMaker --fnt2binfnt -f <path binfnt> -b <path fnt> [-o] <path export new binfnt>
 ```
 Example: `NorthlightFontMaker --fnt2binfnt -f customer_facing.binfnt -b test.fnt -o customer_facing.binfnt.new`
-1. Use [BMFont](https://www.angelcode.com/products/bmfont/) or [Hiero](https://github.com/libgdx/libgdx/wiki/Hiero) to generate FNT file
-2. The tool will automatically import the texture, so you should follow these steps:
+1. Use [BMFont](https://www.angelcode.com/products/bmfont/) or [Hiero](https://github.com/libgdx/libgdx/wiki/Hiero) to generate FNT and DDS file
+2. The tool will automatically import the DDS file, so you should follow these steps:
 - For BMFont user, go to Options then Export Options, on `Textures` select dds, on `Compression` select None
 <img src="sampleImg/settingBMF.png" />
 - For Hiero user, convert png to dds (using texconv or sth) then rename extension to `_0.dds` (example: test.png -> test.dds -> test_0.dds). After that, put the dds file next to fnt file
