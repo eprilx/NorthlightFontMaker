@@ -25,7 +25,9 @@ Example: `NorthlightFontMaker --fnt2binfnt -f customer_facing.binfnt -b test.fnt
 
 - For Hiero user, convert png to dds (using texconv or sth) then rename extension to `_0.dds` (example: test.png -> test.dds -> test_0.dds). After that, put the dds file next to fnt file.
 
-3. Reduce "base" in fnt file (beside lineHeight) to make font bigger and vice versa.
+**Notes**
+- Increase "lineHeight" in fnt file to make font display "higher" in game and vice versa.
+- Decrease "base" in fnt file (beside lineHeight) to make font "bigger" and vice versa.
 
 ❄ Convert BINFNT to FNT
 ```

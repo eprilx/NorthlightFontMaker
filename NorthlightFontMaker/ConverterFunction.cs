@@ -185,7 +185,17 @@ namespace NorthlightFontMaker
                 advanceBINFNT.numb4 = numb4;
                 advanceBINFNT.plus6 = (ushort)(numb6 * count);
                 advanceBINFNT.numb6 = numb6;
-                advanceBINFNT.zero = 0;
+                // swap channel
+                // 0 1 2 RGB
+                // 1 2 4 BGR
+                if (charBMF.chnl == 2)
+                    charBMF.chnl = 1;
+                else if (charBMF.chnl == 1)
+                    charBMF.chnl = 2;
+                else if (charBMF.chnl == 4)
+                    charBMF.chnl = 0;
+                advanceBINFNT.chnl = (uint)charBMF.chnl;
+                //advanceBINFNT.chnl = 0;
                 advanceBINFNT.xadvance1_1 = 0;
                 advanceBINFNT.xadvance1_2 = 0;
                 advanceBINFNT.yoffset2_1 = -charBMF.yoffset / baseLinebmf;

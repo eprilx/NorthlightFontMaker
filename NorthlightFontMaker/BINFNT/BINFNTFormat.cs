@@ -163,7 +163,7 @@ namespace NorthlightFontMaker
                     numb4 = input.ReadValueU16(), // =4
                     plus6 = input.ReadValueU16(), // +6
                     numb6 = input.ReadValueU16(), // =6
-                    zero = input.ReadValueF32(), // =0
+                    chnl = input.ReadValueU32(),
                     xadvance1_1 = input.ReadValueF32(), // = 0 ??
                     yoffset1_1 = input.ReadValueF32(), // = yoffset2 - height
                     xadvance2_1 = input.ReadValueF32(), // = xadvance
@@ -184,7 +184,7 @@ namespace NorthlightFontMaker
                 output.WriteValueU16(_char.numb4);
                 output.WriteValueU16(_char.plus6);
                 output.WriteValueU16(_char.numb6);
-                output.WriteValueF32(_char.zero);
+                output.WriteValueU32(_char.chnl);
                 output.WriteValueF32(_char.xadvance1_1);
                 output.WriteValueF32(_char.yoffset1_1);
                 output.WriteValueF32(_char.xadvance2_1);

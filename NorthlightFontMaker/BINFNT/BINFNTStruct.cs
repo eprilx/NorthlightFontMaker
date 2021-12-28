@@ -92,7 +92,7 @@ namespace NorthlightFontMaker
             public ushort numb4; // = 4
             public ushort plus6; // +6
             public ushort numb6; // = 6
-            public float zero; // = 0
+            public uint chnl;
             public float xadvance1_1; // = 0 ??
             public float yoffset1_1; // = yoffset2 - height
             public float xadvance2_1; // = xadvance
