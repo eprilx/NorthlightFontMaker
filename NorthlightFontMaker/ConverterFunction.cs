@@ -192,7 +192,7 @@ namespace NorthlightFontMaker
                     charBMF.chnl = 1;
                 else if (charBMF.chnl == 1)
                     charBMF.chnl = 2;
-                else if (charBMF.chnl == 4)
+                else
                     charBMF.chnl = 0;
                 advanceBINFNT.chnl = (uint)charBMF.chnl;
                 //advanceBINFNT.chnl = 0;
