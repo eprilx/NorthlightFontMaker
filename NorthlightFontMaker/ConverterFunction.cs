@@ -88,6 +88,18 @@ namespace NorthlightFontMaker
             {
                 //bmf.charDescList[count].yoffset = -advanceBINFNT.yoffset2_1 * binfnt.generalInfo.size;
                 bmf.charDescList[count].xadvance = advanceBINFNT.xadvance2_1 * binfnt.generalInfo.size;
+                // swap channel
+                // 0 1 2 RGB
+                // 1 2 4 BGR
+                if (advanceBINFNT.chnl == 0)
+                {
+                    advanceBINFNT.chnl = 4;
+                }
+                else if (advanceBINFNT.chnl == 1)
+                    advanceBINFNT.chnl = 2;
+                else if (advanceBINFNT.chnl == 2)
+                    advanceBINFNT.chnl = 1;
+                bmf.charDescList[count].chnl = (int)advanceBINFNT.chnl;
                 count += 1;
             }
 
