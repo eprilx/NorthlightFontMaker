@@ -68,6 +68,7 @@ namespace NorthlightFontMaker
                 charBMF.width = width;
                 charBMF.height = height;
                 charBMF.xoffset = charBINFNT.bearingX1_1 * binfnt.generalInfo.size;
+                charBMF.yoffset = binfnt.generalInfo.lineHeight - charBINFNT.bearingY2_1 * binfnt.generalInfo.size - height;
                 //charBMF.yoffset = binfnt.generalInfo.lineHeight - charBINFNT.bearingY1_1 * binfnt.generalInfo.size;
                 //charBMF.xadvance = Ulities.floatRevScale(charBINFNT.xadvance.xadvanceScale, config.scaleXadvance);
                 charBMF.page = 0;
@@ -85,7 +86,7 @@ namespace NorthlightFontMaker
             count = 0;
             foreach (BINFNTStruct.advanceDesc advanceBINFNT in binfnt.advanceDescList)
             {
-                bmf.charDescList[count].yoffset = -advanceBINFNT.yoffset2_1 * binfnt.generalInfo.size;
+                //bmf.charDescList[count].yoffset = -advanceBINFNT.yoffset2_1 * binfnt.generalInfo.size;
                 bmf.charDescList[count].xadvance = advanceBINFNT.xadvance2_1 * binfnt.generalInfo.size;
                 count += 1;
             }
