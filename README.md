@@ -29,6 +29,7 @@ Example: `NorthlightFontMaker --fnt2binfnt -f customer_facing.binfnt -b test.fnt
 - Increase "lineHeight" in fnt file to make font display "higher" in game and vice versa.
 - Decrease "size" in fnt file to make font "bigger" and vice versa. (it also uses absolute value so |-50| > |-40|)
 <img src="sampleImg/editFNT.png" />
+
 - (Optional) Make Outline at "Options/Font settings" in BMFont or "Add Outline" in Hiero.
  
 ❄ **Convert BINFNT to FNT**
