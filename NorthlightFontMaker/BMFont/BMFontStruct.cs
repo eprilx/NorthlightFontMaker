@@ -47,7 +47,7 @@ namespace NorthlightFontMaker
             public int pages;
 
             public string face;
-            public int size;
+            public float size;
             public int bold;
             public int italic;
             public int charsCount;

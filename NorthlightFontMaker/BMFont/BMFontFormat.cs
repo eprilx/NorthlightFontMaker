@@ -128,7 +128,7 @@ namespace NorthlightFontMaker
 
             string info = input[0];
             bmf.generalInfo.face = Ulities.StringBetween(info, "face=\"", "\" ");
-            bmf.generalInfo.size = int.Parse(Ulities.StringBetween(info, "size=", " "));
+            bmf.generalInfo.size = float.Parse(Ulities.StringBetween(info, "size=", " "));
             bmf.generalInfo.bold = int.Parse(Ulities.StringBetween(info, "bold=", " "));
             bmf.generalInfo.italic = int.Parse(Ulities.StringBetween(info, "italic=", " "));
 

@@ -12,7 +12,7 @@ NorthlightFontMaker is a tool used to create/edit custom bitmap fonts for Northl
 
 ## Usage
 
-❄ Convert FNT to BINFNT (Create new BINFNT)
+❄ **Convert FNT to BINFNT (Create new BINFNT)**
 
 ```
 NorthlightFontMaker --fnt2binfnt -f <path binfnt> -b <path fnt> [-o] <path export new binfnt>
@@ -27,15 +27,16 @@ Example: `NorthlightFontMaker --fnt2binfnt -f customer_facing.binfnt -b test.fnt
 
 **Notes**
 - Increase "lineHeight" in fnt file to make font display "higher" in game and vice versa.
-- Decrease "base" in fnt file (beside lineHeight) to make font "bigger" and vice versa.
+- Decrease "size" in fnt file to make font "bigger" and vice versa. (it also uses absolute value so |-50| > |-40|)
+<img src="sampleImg/editFNT.png" />
 
-❄ Convert BINFNT to FNT
+❄ **Convert BINFNT to FNT**
 ```
 NorthlightFontMaker --binfnt2fnt -f <path binfnt> [-o] <path export fnt>
 ```
 Example: ``NorthlightFontMaker --binfnt2fnt -f customer_facing.binfnt -o customer_facing.binfnt.fnt``
 
-It also has a GUI:
+❄ **GUI**
 
 <img src="sampleImg/guiScreen.png" height="280"/>
 

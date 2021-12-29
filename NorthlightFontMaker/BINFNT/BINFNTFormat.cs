@@ -49,7 +49,7 @@ namespace NorthlightFontMaker
 
             ReadTextures(input, ref binfnt.generalInfo, ref binfnt);
 
-            get_Baseline_LineHeight(ref binfnt.generalInfo, binfnt);
+            get_Size_LineHeight(ref binfnt.generalInfo, binfnt);
 
             input.Close();
 
@@ -242,7 +242,7 @@ namespace NorthlightFontMaker
             output.WriteValueU32((uint)inputDDS.Length);
             output.WriteFromStream(inputDDS, inputDDS.Length);
         }
-        private static void get_Baseline_LineHeight(ref general infoBINFNT, BINFNTStruct binfnt)
+        private static void get_Size_LineHeight(ref general infoBINFNT, BINFNTStruct binfnt)
         {
             int id = 4;
             //for (int id = 0; id < infoBINFNT.charsCount; id++)
@@ -250,13 +250,13 @@ namespace NorthlightFontMaker
                 // get point char
                 (float x, float y, float width, float height) = Ulities.getPointFromUVmapping(binfnt.charDescList[id].UVLeft_1, binfnt.charDescList[id].UVTop_1, binfnt.charDescList[id].UVRight_1, binfnt.charDescList[id].UVBottom_1, (int)infoBINFNT.widthImg, (int)infoBINFNT.heightImg);
 
-                // get base line
-                infoBINFNT.baseLine = height / (binfnt.charDescList[id].bearingY1_1 - binfnt.charDescList[id].bearingY2_1);
+                // get size
+                infoBINFNT.size = height / (binfnt.charDescList[id].bearingY1_1 - binfnt.charDescList[id].bearingY2_1);
 
-                infoBINFNT.baseLine = (float)Math.Abs(Math.Round(infoBINFNT.baseLine, 3));
+                infoBINFNT.size = (float)Math.Abs(Math.Round(infoBINFNT.size, 3));
 
                 // get line height
-                infoBINFNT.lineHeight = (-binfnt.advanceDescList[id].yoffset2_1 * infoBINFNT.baseLine + height + binfnt.charDescList[id].bearingY2_1 * infoBINFNT.baseLine);
+                infoBINFNT.lineHeight = (-binfnt.advanceDescList[id].yoffset2_1 * infoBINFNT.size + height + binfnt.charDescList[id].bearingY2_1 * infoBINFNT.size);
                 infoBINFNT.lineHeight = (float)Math.Abs(Math.Round(infoBINFNT.lineHeight, 3));
 
                 //Console.WriteLine(infoBINFNT.lineHeight);

@@ -45,7 +45,7 @@ namespace NorthlightFontMaker
         {
             public int magicBytes; // = 3
             public uint charsCount;
-            public float baseLine;
+            public float size;
             public float lineHeight;
             public uint widthImg;
             public uint heightImg;
@@ -55,7 +55,7 @@ namespace NorthlightFontMaker
         {
             // 64 BYTE
             // _1 = _2
-            // every value should be divided for baseLine except UVMapping (divided for width/height of texture)
+            // every value should be divided for size except UVMapping (divided for width/height of texture)
             public float bearingX1_1; // = xoffset
             public float bearingY2_1; // = lineHeight - yoffset - height char
             public float UVLeft_1;
@@ -87,7 +87,7 @@ namespace NorthlightFontMaker
         {
             // 44 byte
             // _1 = _2
-            // every value should be divided for baseLine
+            // every value should be divided for size
             public ushort plus4; // +4
             public ushort numb4; // = 4
             public ushort plus6; // +6
