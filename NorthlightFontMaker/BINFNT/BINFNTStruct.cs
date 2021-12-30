@@ -55,23 +55,23 @@ namespace NorthlightFontMaker
         {
             // 64 BYTE
             // _1 = _2
-            // every value should be divided for size except UVMapping (divided for width/height of texture)
+            // every value should be divided for size except coordinates (divided for width/height of texture)
             public float bearingX1_1; // = xoffset
             public float bearingY2_1; // = lineHeight - yoffset - height char
-            public float UVLeft_1;
-            public float UVBottom_1;
+            public float xMin_1;
+            public float yMax_1;
             public float bearingX2_1; // = xoffset + width char
             public float bearingY2_2; // = lineHeight - yoffset - height char
-            public float UVRight_1;
-            public float UVBottom_2;
+            public float xMax_1;
+            public float yMax_2;
             public float bearingX2_2; // = xoffset + width char
             public float bearingY1_1; // = bearingY2 + height char = lineHeight - yoffset
-            public float UVRight_2;
-            public float UVTop_1;
+            public float xMax_2;
+            public float yMin_1;
             public float bearingX1_2; // = xoffset
             public float bearingY1_2; // = bearingY2 + height char = lineHeight - yoffset
-            public float UVLeft_2;
-            public float UVTop_2;
+            public float xMin_2;
+            public float yMin_2;
         }
         public class unkDesc
         {

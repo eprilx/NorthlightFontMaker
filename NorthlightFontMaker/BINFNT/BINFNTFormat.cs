@@ -79,20 +79,20 @@ namespace NorthlightFontMaker
                 {
                     bearingX1_1 = input.ReadValueF32(), // = xoffset
                     bearingY2_1 = input.ReadValueF32(), // = lineHeight - yoffset - height char
-                    UVLeft_1 = input.ReadValueF32(),
-                    UVBottom_1 = input.ReadValueF32(),
+                    xMin_1 = input.ReadValueF32(),
+                    yMax_1 = input.ReadValueF32(),
                     bearingX2_1 = input.ReadValueF32(), // = xoffset + width char
                     bearingY2_2 = input.ReadValueF32(), // = lineHeight - yoffset - height char
-                    UVRight_1 = input.ReadValueF32(),
-                    UVBottom_2 = input.ReadValueF32(),
+                    xMax_1 = input.ReadValueF32(),
+                    yMax_2 = input.ReadValueF32(),
                     bearingX2_2 = input.ReadValueF32(), // = xoffset + width char
                     bearingY1_1 = input.ReadValueF32(), // = bearingY2 + height char = lineHeight - yoffset
-                    UVRight_2 = input.ReadValueF32(),
-                    UVTop_1 = input.ReadValueF32(),
+                    xMax_2 = input.ReadValueF32(),
+                    yMin_1 = input.ReadValueF32(),
                     bearingX1_2 = input.ReadValueF32(), // = xoffset
                     bearingY1_2 = input.ReadValueF32(), // = bearingY2 + height char = lineHeight - yoffset
-                    UVLeft_2 = input.ReadValueF32(),
-                    UVTop_2 = input.ReadValueF32()
+                    xMin_2 = input.ReadValueF32(),
+                    yMin_2 = input.ReadValueF32()
                 });
             }
         }
@@ -104,20 +104,20 @@ namespace NorthlightFontMaker
             {
                 output.WriteValueF32(_char.bearingX1_1);
                 output.WriteValueF32(_char.bearingY2_1);
-                output.WriteValueF32(_char.UVLeft_1);
-                output.WriteValueF32(_char.UVBottom_1);
+                output.WriteValueF32(_char.xMin_1);
+                output.WriteValueF32(_char.yMax_1);
                 output.WriteValueF32(_char.bearingX2_1);
                 output.WriteValueF32(_char.bearingY2_2);
-                output.WriteValueF32(_char.UVRight_1);
-                output.WriteValueF32(_char.UVBottom_2);
+                output.WriteValueF32(_char.xMax_1);
+                output.WriteValueF32(_char.yMax_2);
                 output.WriteValueF32(_char.bearingX2_2);
                 output.WriteValueF32(_char.bearingY1_1);
-                output.WriteValueF32(_char.UVRight_2);
-                output.WriteValueF32(_char.UVTop_1);
+                output.WriteValueF32(_char.xMax_2);
+                output.WriteValueF32(_char.yMin_1);
                 output.WriteValueF32(_char.bearingX1_2);
                 output.WriteValueF32(_char.bearingY1_2);
-                output.WriteValueF32(_char.UVLeft_2);
-                output.WriteValueF32(_char.UVTop_2);
+                output.WriteValueF32(_char.xMin_2);
+                output.WriteValueF32(_char.yMin_2);
             }
         }
         private static void ReadTableUnkDesc(FileStream input, ref general infoBINFNT, ref BINFNTStruct binfnt)
@@ -248,7 +248,7 @@ namespace NorthlightFontMaker
             //for (int id = 0; id < infoBINFNT.charsCount; id++)
             {
                 // get point char
-                (float x, float y, float width, float height) = Ulities.getPointFromUVmapping(binfnt.charDescList[id].UVLeft_1, binfnt.charDescList[id].UVTop_1, binfnt.charDescList[id].UVRight_1, binfnt.charDescList[id].UVBottom_1, (int)infoBINFNT.widthImg, (int)infoBINFNT.heightImg);
+                (float x, float y, float width, float height) = Ulities.getPointFromUVmapping(binfnt.charDescList[id].xMin_1, binfnt.charDescList[id].yMin_1, binfnt.charDescList[id].xMax_1, binfnt.charDescList[id].yMax_1, (int)infoBINFNT.widthImg, (int)infoBINFNT.heightImg);
 
                 // get size
                 infoBINFNT.size = height / (binfnt.charDescList[id].bearingY1_1 - binfnt.charDescList[id].bearingY2_1);
