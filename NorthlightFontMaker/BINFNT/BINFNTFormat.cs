@@ -24,7 +24,9 @@ SOFTWARE.
 
 using Gibbed.IO;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace NorthlightFontMaker
 {
@@ -244,8 +246,10 @@ namespace NorthlightFontMaker
         }
         private static void get_Size_LineHeight(ref general infoBINFNT, BINFNTStruct binfnt)
         {
-            int id = 4;
-            //for (int id = 0; id < infoBINFNT.charsCount; id++)
+            //int id = 4;
+            List<float> lineHeightLst = new();
+            List<float> sizeLst = new();
+            for (int id = 0; id < infoBINFNT.charsCount; id++)
             {
                 // get point char
                 (float x, float y, float width, float height) = Ulities.getPointFromUVmapping(binfnt.charDescList[id].xMin_1, binfnt.charDescList[id].yMin_1, binfnt.charDescList[id].xMax_1, binfnt.charDescList[id].yMax_1, (int)infoBINFNT.widthImg, (int)infoBINFNT.heightImg);
@@ -259,8 +263,17 @@ namespace NorthlightFontMaker
                 infoBINFNT.lineHeight = (-binfnt.advanceDescList[id].yoffset2_1 * infoBINFNT.size + height + binfnt.charDescList[id].bearingY2_1 * infoBINFNT.size);
                 infoBINFNT.lineHeight = (float)Math.Abs(Math.Round(infoBINFNT.lineHeight, 3));
 
-                //Console.WriteLine(infoBINFNT.lineHeight);
+                lineHeightLst.Add(infoBINFNT.lineHeight);
+                sizeLst.Add(infoBINFNT.size);
             }
+            infoBINFNT.lineHeight = (from item in lineHeightLst
+                         group item by item into g
+                         orderby g.Count() descending
+                         select g.Key).First();
+            infoBINFNT.size = (from item in sizeLst
+                               group item by item into g
+                               orderby g.Count() descending
+                               select g.Key).First();
         }
     }
 }
