@@ -10,8 +10,10 @@ NorthlightFontMaker is a tool used to create/edit custom bitmap fonts for Northl
 - **[Install .NET 5](https://dotnet.microsoft.com/download/dotnet/5.0)**
 - ``git clone --recurse-submodules https://github.com/eprilx/NorthlightFontMaker.git``
 
-## Usage
+## Test in-game
+[Verdana font and Armenian characters in Alan Wake's American Nightmare](sampleImg/verdana+armenian.png)
 
+## Usage
 ❄ **Convert FNT to BINFNT (Create new BINFNT)**
 
 ```
