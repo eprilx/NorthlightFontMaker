@@ -1,5 +1,0 @@
-<Project>
-  <PropertyGroup>
-    <NDeskOptions_TargetFrameworksToBuild>net5.0</NDeskOptions_TargetFrameworksToBuild>
-  </PropertyGroup>
-</Project>
