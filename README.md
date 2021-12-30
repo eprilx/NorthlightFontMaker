@@ -11,7 +11,7 @@ NorthlightFontMaker is a tool used to create/edit custom bitmap fonts for Northl
 - ``git clone --recurse-submodules https://github.com/eprilx/NorthlightFontMaker.git``
 
 ## Test in-game
-[Verdana font and Armenian characters in Alan Wake's American Nightmare](sampleImg/verdana+armenian.png)
+[Verdana font and Armenian characters in Alan Wake's American Nightmare](https://github.com/eprilx/NorthlightFontMaker/blob/master/sampleImg/verdana+armenian.png?raw=true)
 
 ## Usage
 ❄ **Convert FNT to BINFNT (Create new BINFNT)**
