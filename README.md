@@ -22,10 +22,10 @@ NorthlightFontMaker --fnt2binfnt -f <path binfnt> -b <path fnt> [-o] <path expor
 Example: `NorthlightFontMaker --fnt2binfnt -f customer_facing.binfnt -b test.fnt -o customer_facing.binfnt.new`
 1. Use [BMFont](https://www.angelcode.com/products/bmfont/) or [Hiero](https://github.com/libgdx/libgdx/wiki/Hiero) to generate FNT and DDS file.
 2. The tool will automatically import the DDS file, so you should follow these steps:
-- For BMFont user, go to Options then Export Options, on `Textures` select dds, on `Compression` select None
+- For BMFont user, go to Options then Export Options, on `Font descriptor` select Text or XML, on `Textures` select dds, on `Compression` select None
 <img src="sampleImg/settingBMF.png" />
 
-- For Hiero user, convert png to dds (using texconv or sth) then rename extension to `_0.dds` (example: test.png -> test.dds -> test_0.dds). After that, put the dds file next to fnt file.
+- For Hiero user, convert png to dds B8G8R8A8_unom (using [texconv](https://github.com/microsoft/DirectXTex/releases) or sth) then rename extension to `_0.dds` (example: test.png -> test.dds -> test_0.dds). After that, put the dds file next to fnt file.
 
 **Notes**
 - Increase "lineHeight" in fnt file to make font display "higher" in game and vice versa.
