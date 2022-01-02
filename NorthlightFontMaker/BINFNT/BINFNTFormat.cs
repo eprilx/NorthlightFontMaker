@@ -274,8 +274,8 @@ namespace NorthlightFontMaker
             }
             long posDDS = input.Position;
             input.ReadBytes(12);
-            infoBINFNT.widthImg = input.ReadValueU32();
             infoBINFNT.heightImg = input.ReadValueU32();
+            infoBINFNT.widthImg = input.ReadValueU32();
 
             input.Position = posDDS;
             binfnt.DDSTextures = input.ReadBytes((int)(input.Length - input.Position));
