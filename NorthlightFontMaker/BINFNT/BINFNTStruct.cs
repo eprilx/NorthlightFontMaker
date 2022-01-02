@@ -32,7 +32,9 @@ namespace NorthlightFontMaker
         public List<charDesc> charDescList;
         public List<unkDesc> unkDescList;
         public List<advanceDesc> advanceDescList;
+        public List<kernelDesc> kernelDescList;
         public ushort[] idList;
+        public byte[] unk8DDS;
         public byte[] DDSTextures;
         public BINFNTStruct()
         {
@@ -40,11 +42,13 @@ namespace NorthlightFontMaker
             charDescList = new();
             advanceDescList = new();
             unkDescList = new();
+            kernelDescList = new();
         }
         public class general
         {
-            public int magicBytes; // = 3
+            public int version; // = 3 alan wake // = 7 quantum break
             public uint charsCount;
+            public uint kernsCount;
             public float size;
             public float lineHeight;
             public uint widthImg;
@@ -101,6 +105,12 @@ namespace NorthlightFontMaker
             public float yoffset2_1; // = -Yoffset
             public float xadvance1_2; // = 0 ??
             public float yoffset2_2; // = -Yoffset
+        }
+        public class kernelDesc
+        {
+            public ushort first;
+            public ushort second;
+            public float amount;
         }
     }
 }

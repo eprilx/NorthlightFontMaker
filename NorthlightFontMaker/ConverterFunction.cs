@@ -39,6 +39,7 @@ namespace NorthlightFontMaker
             BMFontStruct bmf = new();
             //convert infoBINFNT 2 infoBMF
             bmf.generalInfo.charsCount = (int)binfnt.generalInfo.charsCount;
+            bmf.generalInfo.kernsCount = (int)binfnt.generalInfo.kernsCount;
             bmf.generalInfo.lineHeight = binfnt.generalInfo.lineHeight;
             bmf.generalInfo.size = binfnt.generalInfo.size;
             bmf.generalInfo.pages = 1;
@@ -95,6 +96,18 @@ namespace NorthlightFontMaker
                 count += 1;
             }
 
+            //convert kernel list
+            if (binfnt.generalInfo.version == 7)
+            {
+                foreach(BINFNTStruct.kernelDesc kernelBINFNT in binfnt.kernelDescList)
+                {
+                    BMFontStruct.kernelDesc kernelBMF = new();
+                    kernelBMF.first = kernelBINFNT.first;
+                    kernelBMF.second = kernelBINFNT.second;
+                    kernelBMF.amount = kernelBINFNT.amount * binfnt.generalInfo.size;
+                    bmf.kernelDescList.Add(kernelBMF);
+                }
+            }
             BMFontFormat.CreateText(outputFNT, bmf);
             File.WriteAllBytes(inputBINFNT + "_0.dds", binfnt.DDSTextures);
         }
@@ -112,6 +125,7 @@ namespace NorthlightFontMaker
 
             //convert infoBMF 2 infoBINFNT
             binfnt.generalInfo.charsCount = (uint)bmf.generalInfo.charsCount;
+            binfnt.generalInfo.kernsCount = (uint)bmf.generalInfo.kernsCount;
             binfnt.generalInfo.lineHeight = bmf.generalInfo.lineHeight;
             bmf.generalInfo.size = Math.Abs(bmf.generalInfo.size);
             binfnt.generalInfo.size = bmf.generalInfo.size;
@@ -222,19 +236,33 @@ namespace NorthlightFontMaker
             binfnt.idList = idList.ToArray();
             BINFNTFormat.WriteTableID(output, binfnt.idList);
 
+            // convert kernel
+            binfnt.kernelDescList.Clear();
+            if(binfnt.generalInfo.version == 7)
+            {
+                foreach(BMFontFormat.kernelDesc kernelBMF in bmf.kernelDescList)
+                {
+                    BINFNTStruct.kernelDesc kernelBINFNT = new();
+                    kernelBINFNT.first = (ushort)kernelBMF.first;
+                    kernelBINFNT.second = (ushort)kernelBMF.second;
+                    kernelBINFNT.amount = (float)kernelBMF.amount / bmf.generalInfo.size;
+                    binfnt.kernelDescList.Add(kernelBINFNT);
+                }
+            }
+            BINFNTFormat.WriteTableKernelDesc(output, binfnt.generalInfo, binfnt);
+
             // write textures
             string pathDDS = inputBMF.Replace(".fnt", "_0.dds", StringComparison.OrdinalIgnoreCase);
             if (File.Exists(pathDDS))
             {
                 var inputDDS = File.OpenRead(pathDDS);
-                BINFNTFormat.WriteTextures(output, inputDDS);
+                BINFNTFormat.WriteTextures(output, binfnt.generalInfo, inputDDS, binfnt);
                 inputDDS.Close();
             }
             else
             {
                 throw new Exception("Missing textures file: " + pathDDS);
             }
-
             output.Close();
         }
     }

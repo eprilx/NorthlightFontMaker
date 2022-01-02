@@ -65,6 +65,7 @@ namespace NorthlightFontMaker
                 _base = 0;
                 idImg = new();
                 fileImg = new();
+                kernsCount = 0;
             }
         }
         public class charDesc

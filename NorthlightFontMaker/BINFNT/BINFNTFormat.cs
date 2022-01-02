@@ -41,6 +41,10 @@ namespace NorthlightFontMaker
             //Read header
             ReadHeader(input, ref binfnt.generalInfo);
 
+            if (binfnt.generalInfo.version != 3 && binfnt.generalInfo.version != 7)
+            {
+                throw new Exception("Unsupported version " + binfnt.generalInfo.version + "\nPlease make an issue and upload this file");
+            }
             ReadTableCharDesc(input, ref binfnt.generalInfo, ref binfnt);
 
             ReadTableUnkDesc(input, ref binfnt.generalInfo, ref binfnt);
@@ -48,7 +52,11 @@ namespace NorthlightFontMaker
             ReadTableAdvanceDesc(input, ref binfnt.generalInfo, ref binfnt);
 
             ReadTableID(input, ref binfnt.idList, binfnt.generalInfo.charsCount);
-
+            
+            if(binfnt.generalInfo.version == 7)
+            {
+                ReadTableKernelDesc(input, ref binfnt.generalInfo, ref binfnt);
+            }
             ReadTextures(input, ref binfnt.generalInfo, ref binfnt);
 
             get_Size_LineHeight(ref binfnt.generalInfo, binfnt);
@@ -61,13 +69,13 @@ namespace NorthlightFontMaker
         private static void ReadHeader(FileStream input, ref general infoBINFNT)
         {
             input.Position = 0;
-            infoBINFNT.magicBytes = input.ReadValueS32(); // =3
+            infoBINFNT.version = input.ReadValueS32(); // =3
         }
 
         public static void WriteHeader(FileStream output, general infoBINFNT)
         {
             output.Position = 0;
-            output.WriteValueS32(infoBINFNT.magicBytes);
+            output.WriteValueS32(infoBINFNT.version);
         }
 
         private static void ReadTableCharDesc(FileStream input, ref general infoBINFNT, ref BINFNTStruct binfnt)
@@ -228,20 +236,60 @@ namespace NorthlightFontMaker
                 output.WriteValueU16(value);
             }
         }
+        private static void ReadTableKernelDesc(FileStream input, ref general infoBINFNT, ref BINFNTStruct binfnt)
+        {
+            infoBINFNT.kernsCount = input.ReadValueU32();
+            for(int i = 0; i < infoBINFNT.kernsCount; i++)
+            {
+                binfnt.kernelDescList.Add(new kernelDesc
+                {
+                    first = input.ReadValueU16(),
+                    second = input.ReadValueU16(),
+                    amount = input.ReadValueF32()
+                });
+            }
+        }
+
+        public static void WriteTableKernelDesc(FileStream output, general infoBINFNT, BINFNTStruct binfnt)
+        {
+            output.WriteValueU32(infoBINFNT.kernsCount);
+            foreach(kernelDesc kernel in binfnt.kernelDescList)
+            {
+                output.WriteValueU16(kernel.first);
+                output.WriteValueU16(kernel.second);
+                output.WriteValueF32(kernel.amount);
+            }
+        }
+
         private static void ReadTextures(FileStream input, ref general infoBINFNT, ref BINFNTStruct binfnt)
         {
             //input.Position = 4 + 4 + infoBINFNT.charsCount * 64 + 4 + infoBINFNT.charsCount * 44 + 131072;
-            uint sizeDDS = input.ReadValueU32();
+            if (infoBINFNT.version == 3)
+            {
+                uint sizeDDS = input.ReadValueU32();
+            }
+            else if (infoBINFNT.version == 7)
+            {
+                binfnt.unk8DDS = input.ReadBytes(8);
+            }
             long posDDS = input.Position;
             input.ReadBytes(12);
             infoBINFNT.widthImg = input.ReadValueU32();
             infoBINFNT.heightImg = input.ReadValueU32();
+
             input.Position = posDDS;
             binfnt.DDSTextures = input.ReadBytes((int)(input.Length - input.Position));
         }
-        public static void WriteTextures(FileStream output, FileStream inputDDS)
+        public static void WriteTextures(FileStream output, general infoBINFNT, FileStream inputDDS, BINFNTStruct binfnt)
         {
-            output.WriteValueU32((uint)inputDDS.Length);
+            if (infoBINFNT.version == 3)
+            {
+                output.WriteValueU32((uint)inputDDS.Length);
+            }
+            else if (infoBINFNT.version == 7)
+            {
+                output.WriteBytes(binfnt.unk8DDS);
+            }
             output.WriteFromStream(inputDDS, inputDDS.Length);
         }
         private static void get_Size_LineHeight(ref general infoBINFNT, BINFNTStruct binfnt)
