@@ -99,12 +99,23 @@ namespace NorthlightFontMaker
             //convert kernel list
             if (binfnt.generalInfo.version == 7)
             {
-                foreach(BINFNTStruct.kernelDesc kernelBINFNT in binfnt.kernelDescList)
+                foreach(BINFNTStruct.kernelDescType7 kernelBINFNT in binfnt.kernelDescListType7)
                 {
                     BMFontStruct.kernelDesc kernelBMF = new();
                     kernelBMF.first = kernelBINFNT.first;
                     kernelBMF.second = kernelBINFNT.second;
                     kernelBMF.amount = kernelBINFNT.amount * binfnt.generalInfo.size;
+                    bmf.kernelDescList.Add(kernelBMF);
+                }
+            }
+            else if (binfnt.generalInfo.version == 4)
+            {
+                foreach (BINFNTStruct.kernelDescType4 kernelBINFNT in binfnt.kernelDescListType4)
+                {
+                    BMFontStruct.kernelDesc kernelBMF = new();
+                    kernelBMF.first = (int)kernelBINFNT.first;
+                    kernelBMF.second = (int)kernelBINFNT.second;
+                    kernelBMF.amount = kernelBINFNT.amount / binfnt.generalInfo.size;
                     bmf.kernelDescList.Add(kernelBMF);
                 }
             }
@@ -141,13 +152,10 @@ namespace NorthlightFontMaker
             float sizeBMF = bmf.generalInfo.size;
             foreach (BMFontStruct.charDesc charBMF in bmf.charDescList)
             {
-                if (charBMF.id == 32)
+                if (charBMF.width == 0 && charBMF.height == 0)
                 {
-                    if (charBMF.width == 0)
-                    {
-                        charBMF.width = 6;
-                        charBMF.height = 6;
-                    }
+                    charBMF.width = 6;
+                    charBMF.height = 6;
                 }
                 //(float x, float y, float width, float height) = Ulities.getPointFromUVmapping(charBINFNT.UVLeft_1, charBINFNT.UVTop_1, charBINFNT.UVRight_1, charBINFNT.UVBottom_1, bmf.generalInfo.WidthImg, bmf.generalInfo.HeightImg);
                 (float UVLeft, float UVTop, float UVRight, float UVBottom) = Ulities.getUVmappingFromPoint(charBMF.x, charBMF.y, charBMF.width, charBMF.height, bmf.generalInfo.WidthImg, bmf.generalInfo.HeightImg);
@@ -170,7 +178,7 @@ namespace NorthlightFontMaker
                 charBINFNT.bearingY1_1 = (lineHeightbmf - charBMF.yoffset) / sizeBMF;
                 charBINFNT.bearingY1_2 = charBINFNT.bearingY1_1;
 
-                if (charBMF.id == 32)
+                if (charBMF.id == 32 || charBMF.id == 9)
                 {
                     charBINFNT.bearingX1_1 = 0;
                     charBINFNT.bearingX1_2 = charBINFNT.bearingX1_1;
@@ -237,16 +245,29 @@ namespace NorthlightFontMaker
             BINFNTFormat.WriteTableID(output, binfnt.idList);
 
             // convert kernel
-            binfnt.kernelDescList.Clear();
+            
             if(binfnt.generalInfo.version == 7)
             {
-                foreach(BMFontFormat.kernelDesc kernelBMF in bmf.kernelDescList)
+                binfnt.kernelDescListType7.Clear();
+                foreach (BMFontFormat.kernelDesc kernelBMF in bmf.kernelDescList)
                 {
-                    BINFNTStruct.kernelDesc kernelBINFNT = new();
+                    BINFNTStruct.kernelDescType7 kernelBINFNT = new();
                     kernelBINFNT.first = (ushort)kernelBMF.first;
                     kernelBINFNT.second = (ushort)kernelBMF.second;
                     kernelBINFNT.amount = (float)kernelBMF.amount / bmf.generalInfo.size;
-                    binfnt.kernelDescList.Add(kernelBINFNT);
+                    binfnt.kernelDescListType7.Add(kernelBINFNT);
+                }
+            }
+            else if (binfnt.generalInfo.version == 4)
+            {
+                binfnt.kernelDescListType4.Clear();
+                foreach (BMFontFormat.kernelDesc kernelBMF in bmf.kernelDescList)
+                {
+                    BINFNTStruct.kernelDescType4 kernelBINFNT = new();
+                    kernelBINFNT.first = (uint)kernelBMF.first;
+                    kernelBINFNT.second = (uint)kernelBMF.second;
+                    kernelBINFNT.amount = (int)(kernelBMF.amount * bmf.generalInfo.size);
+                    binfnt.kernelDescListType4.Add(kernelBINFNT);
                 }
             }
             BINFNTFormat.WriteTableKernelDesc(output, binfnt.generalInfo, binfnt);

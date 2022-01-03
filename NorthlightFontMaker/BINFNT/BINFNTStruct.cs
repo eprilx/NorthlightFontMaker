@@ -28,21 +28,25 @@ namespace NorthlightFontMaker
 {
     public class BINFNTStruct
     {
-        public general generalInfo;
-        public List<charDesc> charDescList;
-        public List<unkDesc> unkDescList;
-        public List<advanceDesc> advanceDescList;
-        public List<kernelDesc> kernelDescList;
+        public general generalInfo = new();
+        public List<charDesc> charDescList = new();
+        public List<unkDesc> unkDescList = new();
+        public List<advanceDesc> advanceDescList = new();
+        public List<kernelDescType4> kernelDescListType4;
+        public List<kernelDescType7> kernelDescListType7;
         public ushort[] idList;
         public byte[] unk8DDS;
         public byte[] DDSTextures;
         public BINFNTStruct()
         {
-            generalInfo = new();
-            charDescList = new();
-            advanceDescList = new();
-            unkDescList = new();
-            kernelDescList = new();
+
+        }
+        public BINFNTStruct(int version)
+        {
+            if (version == 7)
+                kernelDescListType7 = new();
+            else if (version == 4)
+                kernelDescListType4 = new();
         }
         public class general
         {
@@ -106,11 +110,17 @@ namespace NorthlightFontMaker
             public float xadvance1_2; // = 0 ??
             public float yoffset2_2; // = -Yoffset
         }
-        public class kernelDesc
+        public class kernelDescType7
         {
             public ushort first;
             public ushort second;
             public float amount;
+        }
+        public class kernelDescType4
+        {
+            public uint first;
+            public uint second;
+            public int amount;
         }
     }
 }

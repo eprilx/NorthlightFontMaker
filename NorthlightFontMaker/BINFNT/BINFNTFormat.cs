@@ -33,18 +33,23 @@ namespace NorthlightFontMaker
     public class BINFNTFormat : BINFNTStruct
     {
         public static BINFNTStruct Load(string inputBINFNT)
-        {
-            BINFNTStruct binfnt = new();
+        {          
             var input = File.OpenRead(inputBINFNT);
+
+            int version = input.ReadValueS32();
+
+            if (version != 3 && version != 4 && version != 7)
+            {
+                throw new Exception("Unsupported version " + version + "\nPlease make an issue and upload this file");
+            }
+
+            BINFNTStruct binfnt = new(version);
+
             input.Position = 0;
 
             //Read header
             ReadHeader(input, ref binfnt.generalInfo);
 
-            if (binfnt.generalInfo.version != 3 && binfnt.generalInfo.version != 7)
-            {
-                throw new Exception("Unsupported version " + binfnt.generalInfo.version + "\nPlease make an issue and upload this file");
-            }
             ReadTableCharDesc(input, ref binfnt.generalInfo, ref binfnt);
 
             ReadTableUnkDesc(input, ref binfnt.generalInfo, ref binfnt);
@@ -53,10 +58,8 @@ namespace NorthlightFontMaker
 
             ReadTableID(input, ref binfnt.idList, binfnt.generalInfo.charsCount);
             
-            if(binfnt.generalInfo.version == 7)
-            {
-                ReadTableKernelDesc(input, ref binfnt.generalInfo, ref binfnt);
-            }
+            ReadTableKernelDesc(input, ref binfnt.generalInfo, ref binfnt);
+
             ReadTextures(input, ref binfnt.generalInfo, ref binfnt);
 
             get_Size_LineHeight(ref binfnt.generalInfo, binfnt);
@@ -69,7 +72,7 @@ namespace NorthlightFontMaker
         private static void ReadHeader(FileStream input, ref general infoBINFNT)
         {
             input.Position = 0;
-            infoBINFNT.version = input.ReadValueS32(); // =3
+            infoBINFNT.version = input.ReadValueS32();
         }
 
         public static void WriteHeader(FileStream output, general infoBINFNT)
@@ -238,33 +241,62 @@ namespace NorthlightFontMaker
         }
         private static void ReadTableKernelDesc(FileStream input, ref general infoBINFNT, ref BINFNTStruct binfnt)
         {
-            infoBINFNT.kernsCount = input.ReadValueU32();
-            for(int i = 0; i < infoBINFNT.kernsCount; i++)
+            if (binfnt.generalInfo.version == 7 )
             {
-                binfnt.kernelDescList.Add(new kernelDesc
+                infoBINFNT.kernsCount = input.ReadValueU32();
+                for (int i = 0; i < infoBINFNT.kernsCount; i++)
                 {
-                    first = input.ReadValueU16(),
-                    second = input.ReadValueU16(),
-                    amount = input.ReadValueF32()
-                });
+                    binfnt.kernelDescListType7.Add(new kernelDescType7
+                    {
+                        first = input.ReadValueU16(),
+                        second = input.ReadValueU16(),
+                        amount = input.ReadValueF32()
+                    });
+                }
+            }
+            else if (binfnt.generalInfo.version == 4)
+            {
+                infoBINFNT.kernsCount = input.ReadValueU32();
+                for (int i = 0; i < infoBINFNT.kernsCount; i++)
+                {
+                    binfnt.kernelDescListType4.Add(new kernelDescType4
+                    {
+                        first = input.ReadValueU32(),
+                        second = input.ReadValueU32(),
+                        amount = input.ReadValueS32()
+                    });
+                }
             }
         }
 
         public static void WriteTableKernelDesc(FileStream output, general infoBINFNT, BINFNTStruct binfnt)
         {
-            output.WriteValueU32(infoBINFNT.kernsCount);
-            foreach(kernelDesc kernel in binfnt.kernelDescList)
+            if (binfnt.generalInfo.version == 7)
             {
-                output.WriteValueU16(kernel.first);
-                output.WriteValueU16(kernel.second);
-                output.WriteValueF32(kernel.amount);
+                output.WriteValueU32(infoBINFNT.kernsCount);
+                foreach (kernelDescType7 kernel in binfnt.kernelDescListType7)
+                {
+                    output.WriteValueU16(kernel.first);
+                    output.WriteValueU16(kernel.second);
+                    output.WriteValueF32(kernel.amount);
+                }
+            }
+            else if (binfnt.generalInfo.version == 4)
+            {
+                output.WriteValueU32(infoBINFNT.kernsCount);
+                foreach (kernelDescType4 kernel in binfnt.kernelDescListType4)
+                {
+                    output.WriteValueU32(kernel.first);
+                    output.WriteValueU32(kernel.second);
+                    output.WriteValueS32(kernel.amount);
+                }
             }
         }
 
         private static void ReadTextures(FileStream input, ref general infoBINFNT, ref BINFNTStruct binfnt)
         {
             //input.Position = 4 + 4 + infoBINFNT.charsCount * 64 + 4 + infoBINFNT.charsCount * 44 + 131072;
-            if (infoBINFNT.version == 3)
+            if (infoBINFNT.version == 3 || infoBINFNT.version == 4)
             {
                 uint sizeDDS = input.ReadValueU32();
             }
@@ -282,7 +314,7 @@ namespace NorthlightFontMaker
         }
         public static void WriteTextures(FileStream output, general infoBINFNT, FileStream inputDDS, BINFNTStruct binfnt)
         {
-            if (infoBINFNT.version == 3)
+            if (infoBINFNT.version == 3 || infoBINFNT.version == 4)
             {
                 output.WriteValueU32((uint)inputDDS.Length);
             }
