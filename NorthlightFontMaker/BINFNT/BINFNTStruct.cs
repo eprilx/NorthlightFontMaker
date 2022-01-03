@@ -50,7 +50,10 @@ namespace NorthlightFontMaker
         }
         public class general
         {
-            public int version; // = 3 alan wake // = 7 quantum break
+            public int version;
+            // Version 3: Alan Wake, Alan Wake's American Nightmare
+            // Version 4: Alan Wake Remastered
+            // Version 7: Quantum Break, Control
             public uint charsCount;
             public uint kernsCount;
             public float size;

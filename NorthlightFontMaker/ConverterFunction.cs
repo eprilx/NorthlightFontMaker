@@ -178,7 +178,7 @@ namespace NorthlightFontMaker
                 charBINFNT.bearingY1_1 = (lineHeightbmf - charBMF.yoffset) / sizeBMF;
                 charBINFNT.bearingY1_2 = charBINFNT.bearingY1_1;
 
-                if (charBMF.id == 32 || charBMF.id == 9)
+                if (charBMF.id == 32 || charBMF.id == 9 || charBMF.id == 10 || charBMF.id == 13)
                 {
                     charBINFNT.bearingX1_1 = 0;
                     charBINFNT.bearingX1_2 = charBINFNT.bearingX1_1;
