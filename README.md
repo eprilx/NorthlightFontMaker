@@ -40,6 +40,14 @@ NorthlightFontMaker --binfnt2fnt -f <path binfnt> [-o] <path export fnt>
 ```
 Example: ``NorthlightFontMaker --binfnt2fnt -f customer_facing.binfnt -o customer_facing.binfnt.fnt``
 
+**Notes**
+- From version 7 and above, you can't use this FNT because the yoffset when convert BINFNT to FNT is incorrect.
+
+**List game with version**
+- Version 3: Alan Wake, Alan Wake's American Nightmare
+- Version 4: Alan Wake Remastered
+- Version 7: Quantum Break, Control
+
 ❄ **GUI**
 
 <img src="sampleImg/guiScreen.png" height="280"/>

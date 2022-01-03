@@ -1,4 +1,4 @@
-- Add version 7 (Quantum Break)
+- Add version 4 (Alan Wake remastered)
 
 Make sure installed [.Net 5.0](https://dotnet.microsoft.com/download/dotnet/5.0)
 
