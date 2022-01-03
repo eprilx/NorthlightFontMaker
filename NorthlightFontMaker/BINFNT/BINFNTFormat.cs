@@ -33,7 +33,7 @@ namespace NorthlightFontMaker
     public class BINFNTFormat : BINFNTStruct
     {
         public static BINFNTStruct Load(string inputBINFNT)
-        {          
+        {
             var input = File.OpenRead(inputBINFNT);
 
             int version = input.ReadValueS32();
@@ -57,7 +57,7 @@ namespace NorthlightFontMaker
             ReadTableAdvanceDesc(input, ref binfnt.generalInfo, ref binfnt);
 
             ReadTableID(input, ref binfnt.idList, binfnt.generalInfo.charsCount);
-            
+
             ReadTableKernelDesc(input, ref binfnt.generalInfo, ref binfnt);
 
             ReadTextures(input, ref binfnt.generalInfo, ref binfnt);
@@ -241,7 +241,7 @@ namespace NorthlightFontMaker
         }
         private static void ReadTableKernelDesc(FileStream input, ref general infoBINFNT, ref BINFNTStruct binfnt)
         {
-            if (binfnt.generalInfo.version == 7 )
+            if (infoBINFNT.version == 7)
             {
                 infoBINFNT.kernsCount = input.ReadValueU32();
                 for (int i = 0; i < infoBINFNT.kernsCount; i++)
@@ -254,7 +254,7 @@ namespace NorthlightFontMaker
                     });
                 }
             }
-            else if (binfnt.generalInfo.version == 4)
+            else if (infoBINFNT.version == 4)
             {
                 infoBINFNT.kernsCount = input.ReadValueU32();
                 for (int i = 0; i < infoBINFNT.kernsCount; i++)
@@ -271,7 +271,7 @@ namespace NorthlightFontMaker
 
         public static void WriteTableKernelDesc(FileStream output, general infoBINFNT, BINFNTStruct binfnt)
         {
-            if (binfnt.generalInfo.version == 7)
+            if (infoBINFNT.version == 7)
             {
                 output.WriteValueU32(infoBINFNT.kernsCount);
                 foreach (kernelDescType7 kernel in binfnt.kernelDescListType7)
@@ -281,7 +281,7 @@ namespace NorthlightFontMaker
                     output.WriteValueF32(kernel.amount);
                 }
             }
-            else if (binfnt.generalInfo.version == 4)
+            else if (infoBINFNT.version == 4)
             {
                 output.WriteValueU32(infoBINFNT.kernsCount);
                 foreach (kernelDescType4 kernel in binfnt.kernelDescListType4)
@@ -347,9 +347,9 @@ namespace NorthlightFontMaker
                 sizeLst.Add(infoBINFNT.size);
             }
             infoBINFNT.lineHeight = (from item in lineHeightLst
-                         group item by item into g
-                         orderby g.Count() descending
-                         select g.Key).First();
+                                     group item by item into g
+                                     orderby g.Count() descending
+                                     select g.Key).First();
             infoBINFNT.size = (from item in sizeLst
                                group item by item into g
                                orderby g.Count() descending

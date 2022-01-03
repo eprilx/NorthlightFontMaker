@@ -99,7 +99,7 @@ namespace NorthlightFontMaker
             //convert kernel list
             if (binfnt.generalInfo.version == 7)
             {
-                foreach(BINFNTStruct.kernelDescType7 kernelBINFNT in binfnt.kernelDescListType7)
+                foreach (BINFNTStruct.kernelDescType7 kernelBINFNT in binfnt.kernelDescListType7)
                 {
                     BMFontStruct.kernelDesc kernelBMF = new();
                     kernelBMF.first = kernelBINFNT.first;
@@ -245,8 +245,8 @@ namespace NorthlightFontMaker
             BINFNTFormat.WriteTableID(output, binfnt.idList);
 
             // convert kernel
-            
-            if(binfnt.generalInfo.version == 7)
+
+            if (binfnt.generalInfo.version == 7)
             {
                 binfnt.kernelDescListType7.Clear();
                 foreach (BMFontFormat.kernelDesc kernelBMF in bmf.kernelDescList)
