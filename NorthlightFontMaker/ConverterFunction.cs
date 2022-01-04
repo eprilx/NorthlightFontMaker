@@ -33,10 +33,14 @@ namespace NorthlightFontMaker
         public static void ConvertBINFNTtoFNT(string inputBINFNT, string outputFNT)
         {
             //Load BINFNT
+            Console.Write("Load BINFNT... ");
             BINFNTStruct binfnt = BINFNTFormat.Load(inputBINFNT);
+            Console.WriteLine("Success");
 
             // create BMF
             BMFontStruct bmf = new();
+
+            Console.Write("Convert BINFNT to FNT... ");
             //convert infoBINFNT 2 infoBMF
             bmf.generalInfo.charsCount = (int)binfnt.generalInfo.charsCount;
             bmf.generalInfo.kernsCount = (int)binfnt.generalInfo.kernsCount;
@@ -119,18 +123,30 @@ namespace NorthlightFontMaker
                     bmf.kernelDescList.Add(kernelBMF);
                 }
             }
+            Console.WriteLine("Success");
+
+            Console.Write("Create FNT... ");
             BMFontFormat.CreateText(outputFNT, bmf);
+            Console.WriteLine("Success");
+
+            Console.Write("Export DDS... ");
             File.WriteAllBytes(inputBINFNT + "_0.dds", binfnt.DDSTextures);
+            Console.WriteLine("Success");
         }
 
         public static void CreateBINFNTfromFNT(string inputBINFNT, string inputBMF, string outputBINFNT)
         {
             //Load BINFNT
+            Console.Write("Load BINFNT... ");
             BINFNTStruct binfnt = BINFNTFormat.Load(inputBINFNT);
+            Console.WriteLine("Success");
 
             //Load BMFont
+            Console.Write("Load FNT... ");
             BMFontStruct bmf = BMFontFormat.Load(inputBMF);
+            Console.WriteLine("Success");
 
+            Console.Write("Convert FNT to BINFNT... ");
             //Create BINFNT
             var output = File.Create(outputBINFNT);
 
@@ -272,6 +288,9 @@ namespace NorthlightFontMaker
             }
             BINFNTFormat.WriteTableKernelDesc(output, binfnt.generalInfo, binfnt);
 
+            Console.WriteLine("Success");
+
+            Console.Write("Import DDS... ");
             // write textures
             string pathDDS = inputBMF.Replace(".fnt", "_0.dds", StringComparison.OrdinalIgnoreCase);
             if (File.Exists(pathDDS))
@@ -280,6 +299,7 @@ namespace NorthlightFontMaker
                 // replace background for version 7
                 if (binfnt.generalInfo.version == 7)
                 {
+                    Console.Write("convert background color... ");
                     var outputDDStmp = File.Create(pathDDS + ".tmp");
                     outputDDStmp.WriteBytes(inputDDS.ReadBytes(128));
                     ushort oldBackground = inputDDS.ReadValueU16();
@@ -310,6 +330,7 @@ namespace NorthlightFontMaker
             {
                 throw new Exception("Missing textures file: " + pathDDS);
             }
+            Console.WriteLine("Success");
             output.Close();
         }
     }
