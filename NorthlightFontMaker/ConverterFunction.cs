@@ -25,7 +25,7 @@ SOFTWARE.
 using System;
 using System.Collections.Generic;
 using System.IO;
-
+using Gibbed.IO;
 namespace NorthlightFontMaker
 {
     public static class ConverterFunction
@@ -277,6 +277,32 @@ namespace NorthlightFontMaker
             if (File.Exists(pathDDS))
             {
                 var inputDDS = File.OpenRead(pathDDS);
+                // replace background for version 7
+                if (binfnt.generalInfo.version == 7)
+                {
+                    var outputDDStmp = File.Create(pathDDS + ".tmp");
+                    outputDDStmp.WriteBytes(inputDDS.ReadBytes(128));
+                    ushort oldBackground = inputDDS.ReadValueU16();
+                    ushort newBackground = 32767;
+                    inputDDS.Position = 84;
+                    if(inputDDS.ReadValueU32() != 111)
+                    {
+                        throw new Exception("The format of DDS is not R16_FLOAT, please read usage how to convert it and try again!");
+                    }
+                    inputDDS.Position = 128;
+                    for (int i = 0; i < (inputDDS.Length-128)/2 ; i++)
+                    {
+                        ushort currentColor = inputDDS.ReadValueU16();
+                        if(currentColor == oldBackground)
+                        {
+                            currentColor = newBackground;
+                        }
+                        outputDDStmp.WriteValueU16(currentColor);
+                    }
+                    outputDDStmp.Close();
+                    inputDDS.Close();
+                    inputDDS = File.OpenRead(pathDDS + ".tmp");
+                }
                 BINFNTFormat.WriteTextures(output, binfnt.generalInfo, inputDDS, binfnt);
                 inputDDS.Close();
             }
