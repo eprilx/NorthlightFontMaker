@@ -182,6 +182,7 @@ namespace NorthlightFontMaker
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.Write("\nNorthlightFontMaker v" + ToolVersion);
                 Console.WriteLine(" by eprilx");
+                Console.WriteLine("Thanks to microsoft, Rick Gibbed, romhackingvn");
                 Console.ResetColor();
             }
             void Done()
