@@ -1,6 +1,6 @@
-- Automatically convert PNG to DDS
-- Fixed textures for version 7 structure
-- Some improvements ...
+**Changelog:**
+- Use normalize formula when convert BGRA8 to R16_Float distance field
+- Remove texconv
 
 Make sure installed [.Net 5.0](https://dotnet.microsoft.com/download/dotnet/5.0)
 
