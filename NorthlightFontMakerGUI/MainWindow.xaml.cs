@@ -79,7 +79,7 @@ namespace NorthlightFontMakerGUI
             string strCmdText = "";
             foreach (string str in args)
             {
-                strCmdText += "\"" + str + "\"";
+                strCmdText += " \"" + str + "\"";
             }
 
             Console.WriteLine(strCmdText);
