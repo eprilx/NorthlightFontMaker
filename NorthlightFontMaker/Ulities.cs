@@ -156,12 +156,8 @@ namespace NorthlightFontMaker
                 // convert to gray
                 double Gray = (B + R + G) / 3;
 
-                // convert to half
-                float hGray = 0;
-                //if (A > 128)
-                    //hGray = (float)(Gray / 255);
-                //else
-                hGray = (float)((127.5 - A) / 15.875);
+                // normalize alpha to [-8,8]
+                float hGray = -(float)(16 * A / 255.0 - 8);
 
                 if (A > 0)
                     output.WriteBytes(ToInt(hGray));
