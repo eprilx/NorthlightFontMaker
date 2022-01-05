@@ -82,30 +82,39 @@ namespace NorthlightFontMaker
         }
         public static void PNGtoBGRA8(string inputPath)
         {
-            string currentPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            string exePath = currentPath + "\\texconv.exe";
-            string outPath = Path.GetFullPath(Path.GetDirectoryName(inputPath));
-            inputPath = Path.GetFullPath(inputPath);
-            if (!File.Exists(exePath))
-            { throw new Exception("Missing " + exePath); }
-            string strCmdText = " -y -m 1 -f BGRA -o " + "\"" + outPath + "\" " + "\"" + inputPath + "\"";
-
-            //Console.WriteLine(strCmdText);
-
-            Process process = new Process();
-            process.StartInfo.FileName = exePath;
-            process.StartInfo.Arguments = strCmdText;
-            process.Start();
-            process.WaitForExit();
-            // copy dds from outPath to current Path
-            
-            string DDSpath = Path.Combine(outPath, Path.GetFileNameWithoutExtension(inputPath) + ".dds");
-            if (!DDSpath.EndsWith("_0.dds", StringComparison.OrdinalIgnoreCase))
+            Bitmap bitmap = new Bitmap(inputPath);
+            string outPath;
+            if (inputPath.EndsWith("_0.png", StringComparison.OrdinalIgnoreCase))
             {
-                string ddsPathRen = DDSpath.Replace(".dds", "_0.dds", StringComparison.OrdinalIgnoreCase);
-                File.Move(DDSpath, ddsPathRen, true);
+                outPath = inputPath.Replace(".png", ".dds", StringComparison.OrdinalIgnoreCase);
             }
+            else
+            {
+                outPath = inputPath.Replace(".png", "_0.dds", StringComparison.OrdinalIgnoreCase);
+            }
+            var outDDS = File.Create(outPath);
+            //write new header
+            var headerBGRA = File.OpenRead("BGRA8.header");
+            outDDS.WriteBytes(headerBGRA.ReadBytes(12));
+            outDDS.WriteValueU32((uint)bitmap.Height);
+            outDDS.WriteValueU32((uint)bitmap.Width);
+            outDDS.WriteValueU32((uint)(bitmap.Width * 2));
+            headerBGRA.Position = 24;
+            outDDS.WriteFromStream(headerBGRA, headerBGRA.Length - headerBGRA.Position);
+            headerBGRA.Close();
 
+            for (int j = 0; j < bitmap.Height; j++)
+            {
+                for (int i = 0; i < bitmap.Width; i++)
+                {
+                    Color clr = bitmap.GetPixel(i, j);
+                    outDDS.WriteValueU8(clr.B);
+                    outDDS.WriteValueU8(clr.G);
+                    outDDS.WriteValueU8(clr.R);
+                    outDDS.WriteValueU8(clr.A);
+                }
+            }
+            outDDS.Close();
         }
         public static void BGRA8toR16F(FileStream input, FileStream output)
         {

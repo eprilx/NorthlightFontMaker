@@ -21,10 +21,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Update="R16F.header">
+    <PackageReference Include="System.Drawing.Common" Version="5.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="BGRA8.header">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="texconv.exe">
+    <None Update="R16F.header">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

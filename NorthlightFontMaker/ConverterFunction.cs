@@ -131,7 +131,8 @@ namespace NorthlightFontMaker
 
             Console.Write("Export DDS... ");
             File.WriteAllBytes(inputBINFNT + "_0.dds", binfnt.DDSTextures);
-            Console.WriteLine("SUCCESS");
+            Console.WriteLine("Success");
+            Console.WriteLine("ALL SUCCESS");
         }
 
         public static void CreateBINFNTfromFNT(string inputBINFNT, string inputBMF, string outputBINFNT)
@@ -290,7 +291,7 @@ namespace NorthlightFontMaker
 
             Console.WriteLine("Success");
 
-            Console.Write("Import DDS... ");
+            Console.WriteLine("Import DDS... ");
             // write textures
             string pathDDS = inputBMF.Replace(".fnt", "_0.dds", StringComparison.OrdinalIgnoreCase);
             string pathPNG1 = inputBMF.Replace(".fnt", ".png", StringComparison.OrdinalIgnoreCase);
@@ -302,16 +303,18 @@ namespace NorthlightFontMaker
 
             if (File.Exists(pathPNG1) || File.Exists(pathPNG2))
             {
-                Console.Write("\nPNG detected... convert PNG to BGRA8... \n\n");
+                Console.Write("PNG detected... convert PNG to BGRA8... ");
                 string pathPNG = pathPNG2;
                 if (File.Exists(pathPNG1))
                     pathPNG = pathPNG1;
                 Ulities.PNGtoBGRA8(pathPNG);
+                Console.WriteLine("Success");
             }
             WriteDDS(output, pathDDS, binfnt);
 
-            Console.WriteLine("SUCCESS");
             output.Close();
+
+            Console.WriteLine("ALL SUCCESS");
         }
 
         private static void WriteDDS(FileStream output, string pathDDS, BINFNTStruct binfnt)
@@ -321,14 +324,16 @@ namespace NorthlightFontMaker
             if (binfnt.generalInfo.version == 7)
             {
 
-                Console.Write("\nVersion 7 detected... convert BGRA8 to R16_FLOAT distance field... ");
+                Console.Write("Version 7 detected... convert BGRA8 to R16_FLOAT distance field... ");
                 var outputDDStmp = File.Create(pathDDS + ".tmp");
                 Ulities.BGRA8toR16F(inputDDS, outputDDStmp);
 
                 inputDDS = File.OpenRead(pathDDS + ".tmp");
+                Console.WriteLine("Success");
             }
             BINFNTFormat.WriteTextures(output, binfnt.generalInfo, inputDDS, binfnt);
             inputDDS.Close();
+            
         }
     }
 }
