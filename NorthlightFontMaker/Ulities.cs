@@ -22,7 +22,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+
+using System;
+using System.IO;
 using System.Linq;
+using Gibbed.IO;
+using System.Drawing;
+using System.Reflection;
+using System.Diagnostics;
 
 namespace NorthlightFontMaker
 {
@@ -72,6 +79,115 @@ namespace NorthlightFontMaker
         public static float floatRevScale(float number, float Scale)
         {
             return ((float)number / Scale);
+        }
+        public static void PNGtoBGRA8(string inputPath)
+        {
+            string currentPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            string exePath = currentPath + "\\texconv.exe";
+            string outPath = Path.GetFullPath(Path.GetDirectoryName(inputPath));
+            inputPath = Path.GetFullPath(inputPath);
+            if (!File.Exists(exePath))
+            { throw new Exception("Missing " + exePath); }
+            string strCmdText = " -y -m 1 -f BGRA -o " + "\"" + outPath + "\" " + "\"" + inputPath + "\"";
+
+            //Console.WriteLine(strCmdText);
+
+            Process process = new Process();
+            process.StartInfo.FileName = exePath;
+            process.StartInfo.Arguments = strCmdText;
+            process.Start();
+            process.WaitForExit();
+            // copy dds from outPath to current Path
+            
+            string DDSpath = Path.Combine(outPath, Path.GetFileNameWithoutExtension(inputPath) + ".dds");
+            if (!DDSpath.EndsWith("_0.dds", StringComparison.OrdinalIgnoreCase))
+            {
+                string ddsPathRen = DDSpath.Replace(".dds", "_0.dds", StringComparison.OrdinalIgnoreCase);
+                File.Move(DDSpath, ddsPathRen, true);
+            }
+
+        }
+        public static void BGRA8toR16F(FileStream input, FileStream output)
+        {
+            input.Position = 12;
+            //get height 
+            uint heightImg = input.ReadValueU32();
+            //get width
+            uint widthImg = input.ReadValueU32();
+
+            input.Position = 84;
+            if(input.ReadValueU32() == 111)
+            {
+                Console.Write("input DDS is R16F... no convert... ");
+                input.Position = 0;
+                output.WriteFromStream(input, input.Length - input.Position);
+                input.Close();
+                output.Close();
+                return;
+            }    
+            //write new header
+            var headerR16F = File.OpenRead("R16F.header");
+            output.WriteBytes(headerR16F.ReadBytes(12));
+            output.WriteValueU32(heightImg);
+            output.WriteValueU32(widthImg);
+            output.WriteValueU32(widthImg * 2);
+            headerR16F.Position = 24;
+            output.WriteFromStream(headerR16F, headerR16F.Length - headerR16F.Position);
+            headerR16F.Close();
+
+            // read BGRA8 and convert to grayscale
+            input.Position = 128;
+            for(int i = 0; i < (input.Length - 128)/4; i++)
+            {
+                var B = input.ReadValueU8();
+                var R = input.ReadValueU8();
+                var G = input.ReadValueU8();
+                var A = input.ReadValueU8();
+
+                // convert to gray
+                double Gray = (B + R + G) / 3;
+
+                // convert to half
+                float hGray = 0;
+                //if (A > 128)
+                    //hGray = (float)(Gray / 255);
+                //else
+                hGray = (float)((127.5 - A) / 15.875);
+
+                if (A > 0)
+                    output.WriteBytes(ToInt(hGray));
+                else
+                    output.WriteValueU16(32767);
+            }
+            input.Close();
+            output.Close();
+        }
+
+        // source: https://stackoverflow.com/questions/37759848/convert-byte-array-to-16-bits-float
+        private static byte[] I2B(int input)
+        {
+            var bytes = BitConverter.GetBytes(input);
+            return new byte[] { bytes[0], bytes[1] };
+        }
+
+        public static byte[] ToInt(float twoByteFloat)
+        {
+            int fbits = BitConverter.ToInt32(BitConverter.GetBytes(twoByteFloat), 0);
+            int sign = fbits >> 16 & 0x8000;
+            int val = (fbits & 0x7fffffff) + 0x1000;
+            if (val >= 0x47800000)
+            {
+                if ((fbits & 0x7fffffff) >= 0x47800000)
+                {
+                    if (val < 0x7f800000) return I2B(sign | 0x7c00);
+                    return I2B(sign | 0x7c00 | (fbits & 0x007fffff) >> 13);
+                }
+                return I2B(sign | 0x7bff);
+            }
+            if (val >= 0x38800000) return I2B(sign | val - 0x38000000 >> 13);
+            if (val < 0x33000000) return I2B(sign);
+            val = (fbits & 0x7fffffff) >> 23;
+            return I2B(sign | ((fbits & 0x7fffff | 0x800000) + (0x800000 >> val - 102) >> 126 - val));
         }
     }
 }

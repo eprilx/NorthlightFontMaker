@@ -131,7 +131,7 @@ namespace NorthlightFontMaker
 
             Console.Write("Export DDS... ");
             File.WriteAllBytes(inputBINFNT + "_0.dds", binfnt.DDSTextures);
-            Console.WriteLine("Success");
+            Console.WriteLine("SUCCESS");
         }
 
         public static void CreateBINFNTfromFNT(string inputBINFNT, string inputBMF, string outputBINFNT)
@@ -293,45 +293,42 @@ namespace NorthlightFontMaker
             Console.Write("Import DDS... ");
             // write textures
             string pathDDS = inputBMF.Replace(".fnt", "_0.dds", StringComparison.OrdinalIgnoreCase);
-            if (File.Exists(pathDDS))
+            string pathPNG1 = inputBMF.Replace(".fnt", ".png", StringComparison.OrdinalIgnoreCase);
+            string pathPNG2 = inputBMF.Replace(".fnt", "_0.png", StringComparison.OrdinalIgnoreCase);
+            if ( !File.Exists(pathDDS) && !File.Exists(pathPNG1) && !File.Exists(pathPNG2))
             {
-                var inputDDS = File.OpenRead(pathDDS);
-                // replace background for version 7
-                if (binfnt.generalInfo.version == 7)
-                {
-                    Console.Write("convert background color... ");
-                    var outputDDStmp = File.Create(pathDDS + ".tmp");
-                    outputDDStmp.WriteBytes(inputDDS.ReadBytes(128));
-                    ushort oldBackground = inputDDS.ReadValueU16();
-                    ushort newBackground = 32767;
-                    inputDDS.Position = 84;
-                    if(inputDDS.ReadValueU32() != 111)
-                    {
-                        throw new Exception("The format of DDS is not R16_FLOAT, please read usage how to convert it and try again!");
-                    }
-                    inputDDS.Position = 128;
-                    for (int i = 0; i < (inputDDS.Length-128)/2 ; i++)
-                    {
-                        ushort currentColor = inputDDS.ReadValueU16();
-                        if(currentColor == oldBackground)
-                        {
-                            currentColor = newBackground;
-                        }
-                        outputDDStmp.WriteValueU16(currentColor);
-                    }
-                    outputDDStmp.Close();
-                    inputDDS.Close();
-                    inputDDS = File.OpenRead(pathDDS + ".tmp");
-                }
-                BINFNTFormat.WriteTextures(output, binfnt.generalInfo, inputDDS, binfnt);
-                inputDDS.Close();
+                throw new Exception("Missing textures file: " + pathPNG1);
             }
-            else
+
+            if (File.Exists(pathPNG1) || File.Exists(pathPNG2))
             {
-                throw new Exception("Missing textures file: " + pathDDS);
+                Console.Write("\nPNG detected... convert PNG to BGRA8... \n\n");
+                string pathPNG = pathPNG2;
+                if (File.Exists(pathPNG1))
+                    pathPNG = pathPNG1;
+                Ulities.PNGtoBGRA8(pathPNG);
             }
-            Console.WriteLine("Success");
+            WriteDDS(output, pathDDS, binfnt);
+
+            Console.WriteLine("SUCCESS");
             output.Close();
+        }
+
+        private static void WriteDDS(FileStream output, string pathDDS, BINFNTStruct binfnt)
+        {
+            var inputDDS = File.OpenRead(pathDDS);
+            // replace background for version 7
+            if (binfnt.generalInfo.version == 7)
+            {
+
+                Console.Write("\nVersion 7 detected... convert BGRA8 to R16_FLOAT distance field... ");
+                var outputDDStmp = File.Create(pathDDS + ".tmp");
+                Ulities.BGRA8toR16F(inputDDS, outputDDStmp);
+
+                inputDDS = File.OpenRead(pathDDS + ".tmp");
+            }
+            BINFNTFormat.WriteTextures(output, binfnt.generalInfo, inputDDS, binfnt);
+            inputDDS.Close();
         }
     }
 }

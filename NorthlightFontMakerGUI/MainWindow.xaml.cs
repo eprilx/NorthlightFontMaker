@@ -76,10 +76,10 @@ namespace NorthlightFontMakerGUI
             exePath += "NorthlightFontMaker.exe";
             if (!File.Exists(exePath))
             { MessageBox.Show("Missing " + exePath, "Error", MessageBoxButton.OK, MessageBoxImage.Error); return; }
-            string strCmdText = exePath + " ";
+            string strCmdText = "";
             foreach (string str in args)
             {
-                strCmdText += " \"" + str + "\"";
+                strCmdText += "\"" + str + "\"";
             }
 
             Console.WriteLine(strCmdText);
