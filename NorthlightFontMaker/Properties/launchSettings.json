@@ -2,7 +2,7 @@
   "profiles": {
     "NorthlightFontMaker": {
       "commandName": "Project",
-      "commandLineArgs": "--fnt2binfnt -f \"_Quantum_Break_Fonts\\customer_facing.binfnt\" -b\"_Quantum_Break_Fonts\\testSDF.fnt\" -o \"_Quantum_Break_Fonts\\customer_facing.binfnt.new\""
+      "commandLineArgs": "--binfnt2fnt -f \"_Quantum_Break_Fonts\\customer_facing.binfnt\" -b\"_Quantum_Break_Fonts\\testSDF.fnt\""
     }
   }
 }

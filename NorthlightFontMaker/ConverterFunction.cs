@@ -131,6 +131,13 @@ namespace NorthlightFontMaker
 
             Console.Write("Export DDS... ");
             File.WriteAllBytes(inputBINFNT + "_0.dds", binfnt.DDSTextures);
+            if(binfnt.generalInfo.version == 7)
+            {
+                Console.WriteLine("Version 7 detected... convert R16_FLOAT disctance field to BGRA8...");
+                var inputR16F = File.OpenRead(inputBINFNT + "_0.dds");
+                var outputBGRA8 = File.Create(inputBINFNT + "_0.bgra8.dds");
+                Ulities.R16FtoBGRA8(inputR16F, outputBGRA8);
+            }
             Console.WriteLine("Success");
             Console.WriteLine("ALL SUCCESS");
         }
@@ -310,30 +317,26 @@ namespace NorthlightFontMaker
                 Ulities.PNGtoBGRA8(pathPNG);
                 Console.WriteLine("Success");
             }
-            WriteDDS(output, pathDDS, binfnt);
-
-            output.Close();
-
-            Console.WriteLine("ALL SUCCESS");
-        }
-
-        private static void WriteDDS(FileStream output, string pathDDS, BINFNTStruct binfnt)
-        {
             var inputDDS = File.OpenRead(pathDDS);
-            // replace background for version 7
+            
             if (binfnt.generalInfo.version == 7)
             {
 
                 Console.Write("Version 7 detected... convert BGRA8 to R16_FLOAT distance field... ");
-                var outputDDStmp = File.Create(pathDDS + ".tmp");
+                var pathR16F = pathDDS.Substring(0, pathDDS.Length - 3) + "r16f.dds";
+                Console.WriteLine(pathR16F);
+                var outputDDStmp = File.Create(pathR16F);
                 Ulities.BGRA8toR16F(inputDDS, outputDDStmp);
 
-                inputDDS = File.OpenRead(pathDDS + ".tmp");
+                inputDDS = File.OpenRead(pathR16F);
                 Console.WriteLine("Success");
             }
             BINFNTFormat.WriteTextures(output, binfnt.generalInfo, inputDDS, binfnt);
             inputDDS.Close();
-            
+
+            output.Close();
+
+            Console.WriteLine("ALL SUCCESS");
         }
     }
 }
