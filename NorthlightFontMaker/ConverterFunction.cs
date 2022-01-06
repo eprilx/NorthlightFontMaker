@@ -133,7 +133,7 @@ namespace NorthlightFontMaker
             File.WriteAllBytes(inputBINFNT + "_0.dds", binfnt.DDSTextures);
             if(binfnt.generalInfo.version == 7)
             {
-                Console.WriteLine("Version 7 detected... convert R16_FLOAT disctance field to BGRA8...");
+                Console.WriteLine("Version 7 detected... convert R16_FLOAT distance field to BGRA8...");
                 var inputR16F = File.OpenRead(inputBINFNT + "_0.dds");
                 var outputBGRA8 = File.Create(inputBINFNT + "_0.bgra8.dds");
                 Ulities.R16FtoBGRA8(inputR16F, outputBGRA8);
