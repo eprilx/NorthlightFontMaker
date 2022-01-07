@@ -45,8 +45,7 @@ NorthlightFontMaker --binfnt2fnt -f <path binfnt> [-o] <path export fnt>
 Example: ``NorthlightFontMaker --binfnt2fnt -f customer_facing.binfnt -o customer_facing.binfnt.fnt``
 
 **Notes**
-- From version 7 and above, you can't use this FNT because the yoffset when convert BINFNT to FNT is incorrect.
-
+~~- From version 7 and above, you can't use this FNT because the yoffset when convert BINFNT to FNT is incorrect.~~ The yoffset is correct but not sure if it will work in game as lineHeight is customized for each glyph.
 
 
 ❄ **GUI**
