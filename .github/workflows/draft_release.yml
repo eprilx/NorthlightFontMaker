@@ -39,12 +39,13 @@ jobs:
     - run: echo "VERSIONC=${{steps.get-version-cli.outputs.assembly-version}}" >> $env:GITHUB_ENV
     
     # Publish console
-    - run: msbuild ${{env.PROJGUI}} -t:restore -t:Build -t:Publish /p:PublishDir=".${{env.OUTGUI}}" /p:Configuration=Release /p:SelfContained=True /p:Runtimeidentifier=win-x86 /p:PublishReadyToRun=False /p:PublishTrimmed=False
+    - run: msbuild ${{env.PROJGUI}} -t:restore -t:Build -t:Publish /p:PublishDir=".${{env.OUTGUI}}" /p:Configuration=Release /p:SelfContained=False /p:PublishReadyToRun=False /p:PublishTrimmed=False
 
     - run: echo "GUI=${{env.NAME}}_${{env.VERSIONC}}.zip" >> $env:GITHUB_ENV
 
     # Create assets
     # create zip
+    - run: Get-ChildItem -Path ${{env.OUTGUI}} -Directory | remove-Item -recurse -Force
     - run: Compress-Archive -Path ${{env.OUTGUI}}* -DestinationPath ${{env.FINALOUT}}/${{env.GUI}}
 
 
