@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net5.0-windows</TargetFramework>
     <NeutralLanguage>en</NeutralLanguage>
     <AssemblyVersion>1.2.3</AssemblyVersion>
     <PackageProjectUrl>https://github.com/eprilx/NorthlightFontMaker</PackageProjectUrl>
@@ -10,6 +10,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>Copyright (c) 2021 eprilx</Copyright>
+    <PlatformTarget>x86</PlatformTarget>
     <ApplicationIcon />
     <StartupObject />
   </PropertyGroup>
