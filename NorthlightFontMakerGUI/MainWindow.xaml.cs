@@ -53,8 +53,7 @@ namespace NorthlightFontMakerGUI
             string ToolVersion;
             try
             {
-                ToolVersion = Assembly.LoadFrom("NorthlightFontMaker.dll").GetName().Version.ToString();
-                ToolVersion = ToolVersion.Remove(ToolVersion.Length - 2);
+                ToolVersion = FileVersionInfo.GetVersionInfo("NorthlightFontMaker.dll").FileVersion;
                 Hide();
                 AutoUpdater.Synchronous = true;
                 AutoUpdater.InstalledVersion = new Version(ToolVersion);
