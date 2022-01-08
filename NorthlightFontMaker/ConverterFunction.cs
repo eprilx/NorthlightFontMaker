@@ -324,7 +324,6 @@ namespace NorthlightFontMaker
 
                 Console.Write("Version 7 detected... convert BGRA8 to R16_FLOAT distance field... ");
                 var pathR16F = pathDDS.Substring(0, pathDDS.Length - 3) + "r16f.dds";
-                Console.WriteLine(pathR16F);
                 var outputDDStmp = File.Create(pathR16F);
                 Ulities.BGRA8toR16F(inputDDS, outputDDStmp);
 

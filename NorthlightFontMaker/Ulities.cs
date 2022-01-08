@@ -120,7 +120,7 @@ namespace NorthlightFontMaker
             input.Position = 84;
             if(input.ReadValueU32() == 111)
             {
-                Console.Write("input DDS is R16F... no convert... ");
+                Console.Write("input DDS is R16F... no convert BGRA8 to R16F... ");
                 input.Position = 0;
                 output.WriteFromStream(input, input.Length - input.Position);
                 input.Close();
@@ -132,6 +132,9 @@ namespace NorthlightFontMaker
 
             // read BGRA8 and convert to grayscale
             input.Position = 128;
+            float color1 = 0;
+            float color2 = 0;
+            bool continueAnyway = false;
             for(int i = 0; i < widthImg * heightImg; i++)
             {
                 var B = input.ReadValueU8();
@@ -140,8 +143,27 @@ namespace NorthlightFontMaker
                 var A = input.ReadValueU8();
 
                 // convert to gray
-                double Gray = (B + R + G) / 3;
-
+                float Gray = (float)((B + R + G) / 3.0);
+                if (Gray != color1 && color2 == color1)
+                    color2 = Gray;
+                if(Gray != color1 && Gray != color2 && !continueAnyway)
+                {
+                    string ans = "";
+                    while(ans != "YES" && ans != "NO")
+                    {
+                        Console.Write("\nNot a distance field font (please read usage), still convert (YES/NO): ");
+                        ans = Console.ReadLine();
+                    }
+                    if(ans == "YES")
+                    {
+                        continueAnyway = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("User cancelled...");
+                        Environment.Exit(1);
+                    }
+                }
                 // normalize alpha to [-8.5,8.5]
                 float hGray = -(float)((17) * A / 255.0 - 8.5);
 
@@ -165,7 +187,7 @@ namespace NorthlightFontMaker
             input.Position = 84;
             if (input.ReadValueU32() != 111)
             {
-                Console.Write("input DDS is not R16F... no convert... ");
+                Console.Write("input DDS is not R16F... no convert R16F to BGRA8... ");
                 input.Position = 0;
                 output.WriteFromStream(input, input.Length - input.Position);
                 input.Close();
