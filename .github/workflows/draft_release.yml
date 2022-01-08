@@ -45,7 +45,7 @@ jobs:
 
     # Create assets
     # create zip
-    - run: echo "RUNTIMFOLDER=${{env.OUTGUI}}runtimes" >> $env:GITHUB_ENV
+    - run: echo "RUNTIMFOLDER=${{env.OUTGUI}}runtimes*" >> $env:GITHUB_ENV
     - run: Get-ChildItem -Path  ${{env.OUTGUI}} -Directory | Select -ExpandProperty FullName | Where {$_ -notlike ${{env.RUNTIMFOLDER}} | Remove-Item -force 
     - run: Compress-Archive -Path ${{env.OUTGUI}}* -DestinationPath ${{env.FINALOUT}}/${{env.GUI}}
 
