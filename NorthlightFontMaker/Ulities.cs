@@ -164,8 +164,8 @@ namespace NorthlightFontMaker
                         Environment.Exit(1);
                     }
                 }
-                // normalize alpha to [-8.5,8.5]
-                float hGray = -(float)((17) * A / 255.0 - 8.5);
+                // normalize alpha to [-9,9]
+                float hGray = -(float)((18) * A / 255.0 - 9.0);
 
                 if (A > 0)
                     output.WriteBytes(ToInt(hGray));
@@ -204,9 +204,9 @@ namespace NorthlightFontMaker
                 byte lo = (byte)input.ReadByte();
                 float hGray = toTwoByteFloat(hi, lo);
 
-                // normalize alpha to [-8.5,8.5]
+                // normalize alpha to [-9,9]
                 
-                int tmp = (int)((8.5 - hGray) * 255 / 17.0);
+                int tmp = (int)((9.0 - hGray) * 255 / 18.0);
                 if (tmp > 255)
                     tmp = 255;
                 if (tmp < 0)
