@@ -21,10 +21,10 @@ NorthlightFontMaker is a tool used to create/edit custom bitmap fonts for Northl
 NorthlightFontMaker --fnt2binfnt -f <path binfnt> -b <path fnt> [-o] <path export new binfnt>
 ```
 Example: `NorthlightFontMaker --fnt2binfnt -f customer_facing.binfnt -b test.fnt -o customer_facing.binfnt.new`
-1. Use [BMFont](https://www.angelcode.com/products/bmfont/) or [Hiero](https://github.com/libgdx/libgdx/wiki/Hiero) to generate FNT and PNG/DDS file.
+1. Use [BMFont](https://www.angelcode.com/products/bmfont/) or [Hiero](https://libgdx.com/wiki/tools/hiero) to generate FNT and PNG/DDS file.
 2. The tool will automatically convert/import the PNG/DDS file.
 3. For BMFont user, go to Options then Export Options, on `Font descriptor` select Text or XML.
-4. From version 7 (see these version below), you must use Hiero to generate distance field font. [Here's a guide](https://github.com/libgdx/libgdx/wiki/Distance-field-fonts#generating-the-font).
+4. From version 7 (see these version below), you must use Hiero to generate distance field font. [Here's a guide](https://libgdx.com/wiki/graphics/2d/fonts/distance-field-fonts#generating-the-font).
 
 **Notes**
 - Increase "lineHeight" in fnt file to make font display "higher" in game and vice versa.
